@@ -122,15 +122,17 @@ Dữ liệu nằm trong thư mục project, **không** liên quan `AppData\Local
 
 ## Lệnh thường dùng
 
+Container **không** tự chạy khi mở máy — chỉ start khi bạn chạy lệnh.
+
 ```bash
+# Bật server (khi cần chơi)
+docker compose up -d
+
 # Xem log
 docker compose logs -f valheim
 
-# Dừng server
+# Tắt server
 docker compose down
-
-# Khởi động lại
-docker compose up -d
 
 # Cập nhật image
 docker compose pull && docker compose up -d

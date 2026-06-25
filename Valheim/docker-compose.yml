@@ -11,7 +11,6 @@ services:
       - .env
     ports:
       - "2456-2457:2456-2457/udp"
-    restart: unless-stopped
     stop_grace_period: 2m
 
   playit:
@@ -22,4 +21,3 @@ services:
       SECRET_KEY: ${PLAYIT_SECRET_KEY}
     depends_on:
       - valheim
-    restart: unless-stopped

@@ -1,0 +1,6 @@
+.env
+config/
+data/
+!config/bepinex/
+!config/bepinex/plugins/
+!config/bepinex/plugins/.gitkeep

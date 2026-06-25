@@ -1,0 +1,25 @@
+services:
+  valheim:
+    image: lloesche/valheim-server
+    container_name: valheim
+    cap_add:
+      - sys_nice
+    volumes:
+      - ./config:/config
+      - ./data:/opt/valheim
+    env_file:
+      - .env
+    ports:
+      - "2456-2457:2456-2457/udp"
+    restart: unless-stopped
+    stop_grace_period: 2m
+
+  playit:
+    image: ghcr.io/playit-cloud/playit-agent:${PLAYIT_VERSION:-0.17}
+    container_name: playit
+    network_mode: host
+    environment:
+      SECRET_KEY: ${PLAYIT_SECRET_KEY}
+    depends_on:
+      - valheim
+    restart: unless-stopped

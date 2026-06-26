@@ -54,9 +54,31 @@ sudo systemctl stop valheim       # tắt (save world trước khi stop)
 journalctl -u valheim -f          # xem log
 ./native/backup-world.sh          # backup thủ công
 ./native/update-server.sh         # update game (server phải tắt)
+./native/install-serverdevcommands.sh   # tùy chọn: spawn/god cho admin
 ```
 
 **Dữ liệu** dùng chung với Docker: `config/worlds_local/`, `config/bepinex/`.
+
+### Server devcommands (tùy chọn — admin)
+
+Mod [Server devcommands](https://thunderstore.io/c/valheim/p/JereKuusela/Server_devcommands/) bật lệnh vanilla (`spawn`, `god`, `ghost`, …) cho admin trên dedicated server. **Không bắt buộc** — ServerCharacters vẫn chạy bình thường nếu không cài.
+
+| Ai cần cài? | Server (VPS) | Client |
+| ----------- | ------------ | ------ |
+| **Admin**   | Có (script bên dưới) | Có — r2modman/Thunderstore, cùng version |
+| **Player thường** | Không | Không |
+
+Trên VPS (sau `git pull` hoặc copy script):
+
+```bash
+cd /opt/Dedicated-server/Valheim
+./native/install-serverdevcommands.sh
+sudo systemctl restart valheim
+```
+
+Trên **máy admin**: cài mod **Server devcommands** (JereKuusela) qua r2modman, profile Valheim, version **1.108.0** (hoặc khớp `SERVER_DEVCOMMANDS_VERSION` trong `.env`). Vào server → **F5** → `spawn Wood 1000` (không cần gõ `devcommands` trước).
+
+> Lệnh `ServerCharacters giveitem ...` thuộc mod ServerCharacters — không cần Server devcommands.
 
 ### Join game (Native VPS)
 
@@ -330,7 +352,8 @@ Valheim/
 │   ├── link-bepinex-config.sh
 │   ├── start-server.sh
 │   ├── backup-world.sh
-│   └── update-server.sh
+│   ├── update-server.sh
+│   └── install-serverdevcommands.sh
 ├── linux/                     ← Docker (Linux)
 │   ├── setup.sh
 │   └── install-servercharacters.sh

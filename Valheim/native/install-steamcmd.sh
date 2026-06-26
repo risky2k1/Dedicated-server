@@ -7,13 +7,16 @@ source "${ROOT_DIR}/native/lib/common.sh"
 
 ensure_layout
 
-if [[ -x "${STEAMCMD_DIR}/steamcmd.sh" ]]; then
-  echo "SteamCMD already installed: ${STEAMCMD_DIR}/steamcmd.sh"
-  exit 0
+if [[ ! -x "${STEAMCMD_DIR}/steamcmd.sh" ]]; then
+  echo "Installing SteamCMD..."
+  curl -fsSL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" \
+    | tar -xzf - -C "${STEAMCMD_DIR}"
 fi
 
-echo "Installing SteamCMD..."
-curl -fsSL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" \
-  | tar -xzf - -C "${STEAMCMD_DIR}"
+if [[ ! -f "${STEAMCMD_DIR}/.bootstrapped" ]]; then
+  echo "Bootstrapping SteamCMD (first run self-update)..."
+  "${STEAMCMD_DIR}/steamcmd.sh" +quit
+  touch "${STEAMCMD_DIR}/.bootstrapped"
+fi
 
-echo "Installed: ${STEAMCMD_DIR}/steamcmd.sh"
+echo "SteamCMD ready: ${STEAMCMD_DIR}/steamcmd.sh"

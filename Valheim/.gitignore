@@ -3,6 +3,7 @@ config/
 data/
 server/
 native/steamcmd/
+!native/steamcmd/.bootstrapped
 !config/bepinex/
 !config/bepinex/plugins/
 !config/bepinex/plugins/.gitkeep

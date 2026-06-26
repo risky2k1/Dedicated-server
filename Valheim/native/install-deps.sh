@@ -13,6 +13,7 @@ apt-get install -y \
   tar \
   ca-certificates \
   lib32gcc-s1 \
-  lib32stdc++6
+  lib32stdc++6 \
+  libsdl2-2.0-0:i386
 
 echo "System dependencies installed."

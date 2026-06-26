@@ -15,7 +15,13 @@ fi
 # Move legacy cfg files from config/bepinex/*.cfg into config/bepinex/config/
 shopt -s nullglob
 for cfg in "${CONFIG_DIR}/bepinex"/*.cfg; do
-  mv -n "${cfg}" "${BEPINEX_CONFIG_DIR}/"
+  dest="${BEPINEX_CONFIG_DIR}/$(basename "${cfg}")"
+  if [[ ! -e "${dest}" ]]; then
+    mv "${cfg}" "${dest}"
+  elif [[ "${cfg}" != "${dest}" ]]; then
+    echo "Skip: $(basename "${cfg}") already exists in config/"
+    rm -f "${cfg}"
+  fi
 done
 shopt -u nullglob
 

@@ -58,24 +58,123 @@ journalctl -u valheim -f          # xem log
 
 **Dữ liệu** dùng chung với Docker: `config/worlds_local/`, `config/bepinex/`.
 
-### Cài lại từ đầu (VPS)
+### Join game (Native VPS)
+
+| | Giá trị |
+|---|---|
+| Địa chỉ | `IP_VPS:2456` (vd: `160.187.0.6:2456`) |
+| Mật khẩu | `SERVER_PASS` trong `.env` |
+| Client | Cài **ServerCharacters** cùng version server (1.4.16) |
+
+Kiểm tra trên VPS:
 
 ```bash
-cd /opt/Dedicated-server/Valheim
-./native/uninstall.sh
-rm -rf /opt/Dedicated-server /root/Steam
+curl -4 ifconfig.me              # IP public
+systemctl status valheim
+ss -ulnp | grep -E '2456|2457'   # port UDP đang listen
+journalctl -u valheim -n 30      # đợi server ready
+ufw status | grep 2456
+```
+
+Trong game: **Join** → **Join IP** → nhập `IP:2456` → nhập password.
+
+`SERVER_PUBLIC=false` vẫn join được qua IP trực tiếp — chỉ không hiện trong server browser public.
+
+### Copy data từ máy local lên VPS (SCP)
+
+Chạy trên **máy local** (thay `IP_VPS`):
+
+```bash
+cd /path/to/Valheim
+
+ssh root@IP_VPS 'systemctl stop valheim; mkdir -p /opt/Dedicated-server/Valheim/config/{worlds_local,characters_local,bepinex/config}'
+
+# World
+scp -r config/worlds_local/* root@IP_VPS:/opt/Dedicated-server/Valheim/config/worlds_local/
+
+# Character (ServerCharacters)
+scp -r config/characters_local/* root@IP_VPS:/opt/Dedicated-server/Valheim/config/characters_local/
+
+# BepInEx config — chỉ thư mục config/, không scp cả bepinex/
+scp config/bepinex/config/* root@IP_VPS:/opt/Dedicated-server/Valheim/config/bepinex/config/ 2>/dev/null || \
+scp config/bepinex/org.bepinex.plugins.servercharacters.cfg root@IP_VPS:/opt/Dedicated-server/Valheim/config/bepinex/config/
+
+ssh root@IP_VPS 'cd /opt/Dedicated-server/Valheim && ./native/link-bepinex-config.sh && systemctl start valheim'
+```
+
+Kiểm tra trên VPS:
+
+```bash
+ls -lh /opt/Dedicated-server/Valheim/config/worlds_local/*.db
+ls -la /opt/Dedicated-server/Valheim/config/characters_local/
+```
+
+### Cài lại từ đầu (VPS)
+
+> **Cảnh báo:** Xóa hết world/config trên VPS. Dữ liệu trên máy local vẫn giữ — scp lại sau bước 3.
+
+**Bước 1 — Gỡ service và xóa file**
+
+```bash
+# Gỡ systemd + cron (nếu repo còn)
+cd /opt/Dedicated-server/Valheim 2>/dev/null && ./native/uninstall.sh || true
+
+# Hoặc gỡ tay nếu đã xóa repo
+systemctl stop valheim 2>/dev/null || true
+systemctl disable valheim 2>/dev/null || true
+rm -f /etc/systemd/system/valheim.service
+systemctl daemon-reload
+crontab -l 2>/dev/null | grep -v valheim-native | crontab - || true
+
+# Xóa toàn bộ
+rm -rf /opt/Dedicated-server
+rm -rf /root/Steam
+```
+
+**Bước 2 — Clone và cài lại**
+
+```bash
+apt install -y git curl unzip tar lib32gcc-s1 lib32stdc++6
 
 cd /opt
 git clone https://github.com/risky2k1/Dedicated-server.git
 cd Dedicated-server/Valheim
+
 cp .env.example .env
 nano .env
-./native/setup.sh
-ufw allow 2456:2457/udp
-systemctl start valheim
 ```
 
-Sau đó scp lại `config/worlds_local`, `config/characters_local`, `config/bepinex/config/` từ máy local nếu cần.
+Ví dụ `.env` (giá trị có khoảng trắng **phải** có dấu `"`):
+
+```bash
+SERVER_NAME="Tuns Valheim Server"
+WORLD_NAME=SuperSeed2
+SERVER_PASS="123qwe"
+SERVER_PUBLIC=false
+BEPINEX=true
+BACKUPS_CRON="0 */6 * * *"
+UPDATE_CRON="*/15 * * * *"
+SERVER_ARGS="-modifier combat hard -modifier resources most -modifier portals casual"
+```
+
+```bash
+chmod +x native/setup.sh
+./native/setup.sh
+
+ufw allow 2456:2457/udp
+systemctl start valheim
+journalctl -u valheim -f
+```
+
+Đợi tải game (~1 GB) và log báo server ready.
+
+**Bước 3 — Copy data từ local**
+
+Xem mục [Copy data từ máy local lên VPS](#copy-data-từ-máy-local-lên-vps-scp) ở trên.
+
+**Bước 4 — Join**
+
+`IP_VPS:2456` + password trong `.env`.
 
 ## Cài nhanh — Docker
 
@@ -171,12 +270,14 @@ docker compose restart valheim
 
 Xem thêm tùy chọn trong `.env.example`.
 
+> **Lưu ý `.env`:** Giá trị có khoảng trắng hoặc cron (`*`) phải bọc dấu `"` — vd: `SERVER_NAME="My Server"`, `BACKUPS_CRON="0 */6 * * *"`. Native dùng parser an toàn; Docker Compose cũng khuyến nghị quote.
+
 ## Dữ liệu lưu ở đâu
 
 ```
 config/
 ├── worlds_local/          ← world (.db, .fwl) — WORLD_NAME trỏ vào đây
-│   └── SuperSeed2.db
+├── characters_local/      ← nhân vật ServerCharacters
 ├── backups/
 └── bepinex/
     ├── plugins/           ← mod DLL (server đọc qua symlink)
@@ -224,6 +325,9 @@ Valheim/
 ├── README.md
 ├── native/                    ← SteamCMD native (VPS)
 │   ├── setup.sh
+│   ├── uninstall.sh
+│   ├── fix-data-layout.sh
+│   ├── link-bepinex-config.sh
 │   ├── start-server.sh
 │   ├── backup-world.sh
 │   └── update-server.sh

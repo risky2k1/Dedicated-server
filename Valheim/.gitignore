@@ -1,6 +1,8 @@
 .env
 config/
 data/
+server/
+native/steamcmd/
 !config/bepinex/
 !config/bepinex/plugins/
 !config/bepinex/plugins/.gitkeep

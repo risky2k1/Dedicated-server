@@ -6,7 +6,9 @@ UID_VAL="$(id -u)"
 GID_VAL="$(id -g)"
 
 mkdir -p "${ROOT_DIR}/config/bepinex/plugins" \
+         "${ROOT_DIR}/config/bepinex/config" \
          "${ROOT_DIR}/config/worlds_local" \
+         "${ROOT_DIR}/config/backups" \
          "${ROOT_DIR}/data"
 
 needs_sudo=false

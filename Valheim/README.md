@@ -1,18 +1,64 @@
-# Valheim Dedicated Server (Docker)
+# Valheim Dedicated Server
 
-Server Valheim chạy bằng Docker, tự port forward qua [playit.gg](https://playit.gg), có mod **ServerCharacters** để lưu nhân vật trên server (chống mang đồ từ world khác).
+Server Valheim với mod **ServerCharacters** (lưu nhân vật trên server, chống mang đồ từ world khác).
+
+Hai cách deploy:
+
+| Cách | Thư mục | Phù hợp |
+|------|---------|---------|
+| **Docker** | `./linux/setup.sh` | Tiện, tự update/backup |
+| **Native** | `./native/setup.sh` | VPS RAM thấp (3 GB), có IP public |
 
 ## Yêu cầu
 
+### Docker (Linux / Windows)
+
 | | Linux | Windows |
 |---|-------|---------|
-| Docker | Docker Engine + Compose v2 | [Docker Desktop](https://www.docker.com/products/docker-desktop/) (bật WSL2 backend) |
-| Mạng | Internet ổn định | Internet ổn định |
-| Dung lượng | ~2 GB trống (game + world) | ~2 GB trống |
+| Docker | Docker Engine + Compose v2 | [Docker Desktop](https://www.docker.com/products/docker-desktop/) |
+| Dung lượng | ~2 GB trống | ~2 GB trống |
 
-## Cài nhanh
+### Native (Linux VPS)
 
-### Linux
+| | Yêu cầu |
+|---|---------|
+| OS | Ubuntu 22.04 / 24.04 |
+| RAM | 3 GB+ (khuyến nghị 4 GB) |
+| CPU | 2 vCPU |
+| Disk | 30 GB NVMe |
+| Mạng | Mở UDP **2456–2457** trên firewall (có IPv4 riêng) |
+
+## Cài nhanh — Native (khuyến nghị cho VPS)
+
+```bash
+cd Valheim
+cp .env.example .env
+# Sửa .env: SERVER_PASS (≥5 ký tự), SERVER_NAME, WORLD_NAME
+./native/setup.sh
+sudo ufw allow 2456:2457/udp
+sudo systemctl start valheim
+```
+
+Script tự:
+
+1. Cài SteamCMD + Valheim dedicated server (~1 GB)
+2. Cài BepInEx + ServerCharacters
+3. Tạo systemd service `valheim`
+4. Cài cron backup/update (theo `.env`)
+
+**Lệnh thường dùng:**
+
+```bash
+sudo systemctl start valheim      # bật
+sudo systemctl stop valheim       # tắt (save world trước khi stop)
+journalctl -u valheim -f          # xem log
+./native/backup-world.sh          # backup thủ công
+./native/update-server.sh         # update game (server phải tắt)
+```
+
+**Dữ liệu** dùng chung với Docker: `config/worlds_local/`, `config/bepinex/`.
+
+## Cài nhanh — Docker
 
 ```bash
 cd Valheim
@@ -149,16 +195,34 @@ Valheim/
 ├── docker-compose.yml
 ├── .env.example
 ├── README.md
-├── linux/
+├── native/                    ← SteamCMD native (VPS)
+│   ├── setup.sh
+│   ├── start-server.sh
+│   ├── backup-world.sh
+│   └── update-server.sh
+├── linux/                     ← Docker (Linux)
 │   ├── setup.sh
 │   └── install-servercharacters.sh
-└── windows/
+└── windows/                   ← Docker (Windows)
     ├── setup.bat
     ├── setup.ps1
     └── install-servercharacters.ps1
 ```
 
 ## Xử lý lỗi
+
+### Native
+
+**Server không start**  
+→ `journalctl -u valheim -n 50` — kiểm tra `SERVER_PASS` ≥ 5 ký tự.
+
+**Client không vào được**  
+→ Mở firewall UDP 2456–2457. Join bằng `IP_VPS:2456`. Client phải cài ServerCharacters cùng version.
+
+**Thiếu lib32 khi cài SteamCMD**  
+→ `sudo ./native/install-deps.sh` rồi chạy lại `./native/setup.sh`.
+
+### Docker
 
 **Docker không chạy (Windows)**  
 → Mở Docker Desktop, đợi icon xanh rồi chạy lại `setup.bat`.

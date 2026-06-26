@@ -58,6 +58,25 @@ journalctl -u valheim -f          # xem log
 
 **Dữ liệu** dùng chung với Docker: `config/worlds_local/`, `config/bepinex/`.
 
+### Cài lại từ đầu (VPS)
+
+```bash
+cd /opt/Dedicated-server/Valheim
+./native/uninstall.sh
+rm -rf /opt/Dedicated-server /root/Steam
+
+cd /opt
+git clone https://github.com/risky2k1/Dedicated-server.git
+cd Dedicated-server/Valheim
+cp .env.example .env
+nano .env
+./native/setup.sh
+ufw allow 2456:2457/udp
+systemctl start valheim
+```
+
+Sau đó scp lại `config/worlds_local`, `config/characters_local`, `config/bepinex/config/` từ máy local nếu cần.
+
 ## Cài nhanh — Docker
 
 ```bash

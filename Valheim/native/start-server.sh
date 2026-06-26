@@ -36,5 +36,5 @@ if $use_bepinex; then
 fi
 
 echo "Starting Valheim server (BepInEx: ${use_bepinex})..."
-echo "World: ${WORLD_NAME} | Savedir: ${CONFIG_DIR}/worlds_local"
+echo "World: ${WORLD_NAME} | Worlds: ${WORLDS_DIR}"
 exec ./valheim_server.x86_64 "${SERVER_LAUNCH_ARGS[@]}"

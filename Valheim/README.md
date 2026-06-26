@@ -4,28 +4,28 @@ Server Valheim với mod **ServerCharacters** (lưu nhân vật trên server, ch
 
 Hai cách deploy:
 
-| Cách | Thư mục | Phù hợp |
-|------|---------|---------|
-| **Docker** | `./linux/setup.sh` | Tiện, tự update/backup |
+| Cách       | Thư mục             | Phù hợp                           |
+| ---------- | ------------------- | --------------------------------- |
+| **Docker** | `./linux/setup.sh`  | Tiện, tự update/backup            |
 | **Native** | `./native/setup.sh` | VPS RAM thấp (3 GB), có IP public |
 
 ## Yêu cầu
 
 ### Docker (Linux / Windows)
 
-| | Linux | Windows |
-|---|-------|---------|
-| Docker | Docker Engine + Compose v2 | [Docker Desktop](https://www.docker.com/products/docker-desktop/) |
-| Dung lượng | ~2 GB trống | ~2 GB trống |
+|            | Linux                      | Windows                                                           |
+| ---------- | -------------------------- | ----------------------------------------------------------------- |
+| Docker     | Docker Engine + Compose v2 | [Docker Desktop](https://www.docker.com/products/docker-desktop/) |
+| Dung lượng | ~2 GB trống                | ~2 GB trống                                                       |
 
 ### Native (Linux VPS)
 
-| | Yêu cầu |
-|---|---------|
-| OS | Ubuntu 22.04 / 24.04 |
-| RAM | 3 GB+ (khuyến nghị 4 GB) |
-| CPU | 2 vCPU |
-| Disk | 30 GB NVMe |
+|      | Yêu cầu                                            |
+| ---- | -------------------------------------------------- |
+| OS   | Ubuntu 22.04 / 24.04                               |
+| RAM  | 3 GB+ (khuyến nghị 4 GB)                           |
+| CPU  | 2 vCPU                                             |
+| Disk | 30 GB NVMe                                         |
 | Mạng | Mở UDP **2456–2457** trên firewall (có IPv4 riêng) |
 
 ## Cài nhanh — Native (khuyến nghị cho VPS)
@@ -125,10 +125,10 @@ config/bepinex/config/<tên file ServerCharacters>.cfg
 
 Khuyến nghị:
 
-| Setting | Giá trị | Lý do |
-|---------|---------|-------|
-| Single Character Mode | `true` | Mỗi SteamID chỉ 1 nhân vật |
-| Backup Only Mode | `false` | Server enforce profile, không chỉ backup |
+| Setting               | Giá trị | Lý do                                    |
+| --------------------- | ------- | ---------------------------------------- |
+| Single Character Mode | `true`  | Mỗi SteamID chỉ 1 nhân vật               |
+| Backup Only Mode      | `false` | Server enforce profile, không chỉ backup |
 
 Restart server sau khi sửa config:
 
@@ -138,17 +138,17 @@ docker compose restart valheim
 
 ## Biến môi trường (.env)
 
-| Biến | Mô tả |
-|------|-------|
-| `PLAYIT_SECRET_KEY` | Secret key từ playit.gg |
-| `SERVER_NAME` | Tên hiển thị trong server browser |
-| `WORLD_NAME` | Tên world (không có khoảng trắng) |
-| `SERVER_PASS` | Mật khẩu join (≥ 5 ký tự, không trùng tên server) |
-| `SERVER_PUBLIC` | `false` = private, join qua playit |
-| `BEPINEX` | `true` = bật mod support |
-| `ADMINLIST_IDS` | SteamID64 admin (để trống nếu không cần admin) |
-| `PUID` / `PGID` | UID/GID chạy container (Linux: `setup.sh` tự điền) |
-| `TZ` | Múi giờ (vd: `Asia/Ho_Chi_Minh`) |
+| Biến                | Mô tả                                              |
+| ------------------- | -------------------------------------------------- |
+| `PLAYIT_SECRET_KEY` | Secret key từ playit.gg                            |
+| `SERVER_NAME`       | Tên hiển thị trong server browser                  |
+| `WORLD_NAME`        | Tên world (không có khoảng trắng)                  |
+| `SERVER_PASS`       | Mật khẩu join (≥ 5 ký tự, không trùng tên server)  |
+| `SERVER_PUBLIC`     | `false` = private, join qua playit                 |
+| `BEPINEX`           | `true` = bật mod support                           |
+| `ADMINLIST_IDS`     | SteamID64 admin (để trống nếu không cần admin)     |
+| `PUID` / `PGID`     | UID/GID chạy container (Linux: `setup.sh` tự điền) |
+| `TZ`                | Múi giờ (vd: `Asia/Ho_Chi_Minh`)                   |
 
 Xem thêm tùy chọn trong `.env.example`.
 
@@ -156,13 +156,21 @@ Xem thêm tùy chọn trong `.env.example`.
 
 ```
 config/
-├── worlds_local/          ← world (.db, .fwl)
-├── backups/               ← backup world tự động
+├── worlds_local/          ← world (.db, .fwl) — WORLD_NAME trỏ vào đây
+│   └── SuperSeed2.db
+├── backups/
 └── bepinex/
-    ├── plugins/           ← mod DLL
-    └── config/            ← cấu hình mod + file nhân vật server
-data/                      ← file game server (cache, tự tải)
+    ├── plugins/           ← mod DLL (server đọc qua symlink)
+    └── config/            ← BepInEx + ServerCharacters config (CHỖ DÙNG)
+data/                      ← Docker only
+server/                    ← Native only (game binary, không sửa tay)
 ```
+
+**Native:** `-savedir` = `config/` (không phải `config/worlds_local/`). Valheim tự tạo `worlds_local/` bên trong.
+
+**BepInEx:** chỉ `config/bepinex/config/` được dùng. File `.cfg` ở `config/bepinex/` (ngoài thư mục `config/`) là duplicate — chạy `./native/fix-data-layout.sh` để gom lại.
+
+**SCP world từ local:** copy vào `config/worlds_local/` (file `.db`/`.fwl` nằm trực tiếp trong đó, không tạo thêm cấp con).
 
 Dữ liệu nằm trong thư mục project, **không** liên quan `AppData\LocalLow\IronGate\Valheim` trên Windows (đó là save client).
 
@@ -213,6 +221,19 @@ Valheim/
 
 ### Native
 
+**World không load / tạo world mới lạ (Dedicated) thay vì SuperSeed2**  
+→ `-savedir` sai tạo `worlds_local/worlds_local/`. Chạy:
+```bash
+systemctl stop valheim
+# git pull nếu có bản mới, hoặc sửa tay common.sh: -savedir phải là config/ không phải config/worlds_local/
+./native/fix-data-layout.sh
+# .env: WORLD_NAME=SuperSeed2
+systemctl start valheim
+```
+
+**Hai chỗ config BepInEx**  
+→ Chỉ `config/bepinex/config/` được dùng. `./native/fix-data-layout.sh` gom file từ `config/bepinex/*.cfg` vào đó.
+
 **Server không start**  
 → `journalctl -u valheim -n 50` — kiểm tra `SERVER_PASS` ≥ 5 ký tự.
 
@@ -241,8 +262,10 @@ Valheim/
 
 **Permission denied khi chạy setup.sh**  
 → File `config/` bị Docker tạo với quyền root. Chạy một lần:
+
 ```bash
 sudo chown -R $(id -u):$(id -g) config data
 ./linux/setup.sh
 ```
+
 `setup.sh` sẽ set `PUID`/`PGID` trong `.env` để container không tạo file root nữa.

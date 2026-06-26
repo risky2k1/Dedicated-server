@@ -9,6 +9,8 @@ fi
 STEAMCMD_DIR="${ROOT_DIR}/native/steamcmd"
 SERVER_DIR="${ROOT_DIR}/server"
 CONFIG_DIR="${ROOT_DIR}/config"
+WORLD_SAVE_DIR="${CONFIG_DIR}"
+WORLDS_DIR="${CONFIG_DIR}/worlds_local"
 BACKUP_DIR="${CONFIG_DIR}/backups"
 PLUGINS_DIR="${CONFIG_DIR}/bepinex/plugins"
 BEPINEX_CONFIG_DIR="${CONFIG_DIR}/bepinex/config"
@@ -80,7 +82,7 @@ build_server_args() {
     -port 2456
     -world "${WORLD_NAME:?WORLD_NAME is required}"
     -password "${SERVER_PASS:?SERVER_PASS is required}"
-    -savedir "${CONFIG_DIR}/worlds_local"
+    -savedir "${WORLD_SAVE_DIR}"
   )
 
   if env_bool "${SERVER_PUBLIC:-false}"; then

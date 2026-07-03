@@ -6,6 +6,11 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 export DEBIAN_FRONTEND=noninteractive
+
+if ! dpkg --print-foreign-architectures | grep -q i386; then
+  dpkg --add-architecture i386
+fi
+
 apt-get update
 apt-get install -y \
   curl \
@@ -13,7 +18,9 @@ apt-get install -y \
   tar \
   ca-certificates \
   lib32gcc-s1 \
-  lib32stdc++6 \
-  libsdl2-2.0-0:i386
+  lib32stdc++6
+
+# libsdl2 i386 optional — not always available on Ubuntu 24.04; Valheim runs without it
+apt-get install -y libsdl2-2.0-0:i386 2>/dev/null || true
 
 echo "System dependencies installed."

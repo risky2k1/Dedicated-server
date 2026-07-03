@@ -1,0 +1,6 @@
+- name: Everyone
+  commands:
+    permissions: no
+- id: 76561199136090980
+  name: RaNni
+  character: 368383101

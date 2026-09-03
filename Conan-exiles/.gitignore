@@ -1,0 +1,14 @@
+.env
+config/Saved/
+!config/Saved/Config/
+!config/Saved/Config/LinuxServer/
+config/Saved/Config/LinuxServer/*
+!config/Saved/Config/LinuxServer/.gitkeep
+config/backups/
+server/
+native/steamcmd/
+!native/steamcmd/.bootstrapped
+vps-info.md
+*.db
+*.db-wal
+*.db-shm

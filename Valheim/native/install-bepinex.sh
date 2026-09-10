@@ -8,7 +8,7 @@ source "${ROOT_DIR}/native/lib/common.sh"
 load_env
 ensure_layout
 
-VERSION="${BEPINEX_PACK_VERSION:-5.4.2202}"
+VERSION="${BEPINEX_PACK_VERSION:-5.4.2350}"
 DOWNLOAD_URL="https://thunderstore.io/package/download/denikson/BepInExPack_Valheim/${VERSION}/"
 
 if [[ ! -f "${SERVER_DIR}/valheim_server.x86_64" ]]; then

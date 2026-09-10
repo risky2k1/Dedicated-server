@@ -28,9 +28,10 @@ if env_bool "${BEPINEX:-true}" && [[ -d "${SERVER_DIR}/BepInEx" ]]; then
 fi
 
 if $use_bepinex; then
-  export DOORSTOP_ENABLE=TRUE
-  export DOORSTOP_INVOKE_DLL_PATH=./BepInEx/core/BepInEx.Preloader.dll
-  export DOORSTOP_CORLIB_OVERRIDE_PATH=./unstripped_corlib
+  # Doorstop 4.x (BepInExPack Valheim 5.4.23xx+) — matches start_server_bepinex.sh
+  export DOORSTOP_ENABLED=1
+  export DOORSTOP_TARGET_ASSEMBLY=./BepInEx/core/BepInEx.Preloader.dll
+  unset DOORSTOP_ENABLE DOORSTOP_INVOKE_DLL_PATH DOORSTOP_CORLIB_OVERRIDE_PATH || true
   export LD_LIBRARY_PATH="./doorstop_libs:${LD_LIBRARY_PATH}"
   export LD_PRELOAD="libdoorstop_x64.so:${LD_PRELOAD:-}"
 fi

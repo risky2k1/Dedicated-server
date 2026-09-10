@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tuns Valheim Server</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg0: #0c1210;
+      --bg1: #152019;
+      --ink: #e8efe6;
+      --muted: #9bb09a;
+      --accent: #c4a35a;
+      --accent-dim: #8a7340;
+      --panel: rgba(18, 28, 22, 0.72);
+      --line: rgba(196, 163, 90, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(196, 163, 90, 0.18), transparent 55%),
+        linear-gradient(160deg, var(--bg0), var(--bg1) 45%, #0a100e);
+      line-height: 1.55;
+    }
+
+    .wrap {
+      width: min(920px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 3.5rem 0 4rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 2.5rem 1.5rem 2rem;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(196, 163, 90, 0.08), transparent 55%),
+        var(--panel);
+      backdrop-filter: blur(8px);
+    }
+
+    .eyebrow {
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-size: 0.75rem;
+      margin: 0 0 0.85rem;
+    }
+
+    h1 {
+      font-family: Cinzel, Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin: 0 0 0.6rem;
+      letter-spacing: 0.04em;
+    }
+
+    .tagline {
+      margin: 0 auto;
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .join {
+      margin-top: 1.75rem;
+      display: inline-grid;
+      gap: 0.35rem;
+      padding: 1rem 1.4rem;
+      border: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.28);
+      text-align: left;
+    }
+
+    .join strong {
+      color: var(--accent);
+      font-family: Cinzel, Georgia, serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+    }
+
+    .join code {
+      font-size: 1.15rem;
+      color: var(--ink);
+    }
+
+    section {
+      margin-top: 1.75rem;
+      padding: 1.5rem 1.4rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    h2 {
+      font-family: Cinzel, Georgia, serif;
+      font-size: 1.15rem;
+      margin: 0 0 0.9rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.15rem;
+    }
+
+    li { margin: 0.35rem 0; }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .card h3 {
+      margin: 0 0 0.45rem;
+      font-family: Cinzel, Georgia, serif;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    .note {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-left: 3px solid var(--accent-dim);
+      background: rgba(196, 163, 90, 0.08);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="eyebrow">Valheim 1.0 · Dedicated</p>
+      <h1>Tuns Valheim Server</h1>
+      <p class="tagline">
+        Server riêng cho nhóm bạn — world mới, seed cố định, chơi thoải mái không sợ mất đồ khi chết nặng.
+      </p>
+      <div class="join" aria-label="Thông tin join">
+        <strong>Join IP</strong>
+        <code>180.93.113.164:2456</code>
+        <strong>Password</strong>
+        <code>122333</code>
+      </div>
+    </header>
+
+    <section>
+      <h2>World</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Tên &amp; seed</h3>
+          <p><strong style="color:var(--ink)">riskyyy</strong></p>
+        </div>
+        <div class="card">
+          <h3>Resources ×2</h3>
+          <p>x2 tài nguyên.</p>
+        </div>
+        <div class="card">
+          <h3>Death Penalty</h3>
+          <p>Vẫn rơi hết đồ khi chết nhưng skills giảm rất ít</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cần cài trên máy chơi </h2>
+      <ul>
+        <li>Valheim bản <strong>1.0</strong> (Steam).</li>
+        <li>
+          <a href="https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/" target="_blank" rel="noopener">BepInExPack Valheim</a>
+          — khuyến nghị dùng r2modman / Thunderstore Mod Manager.
+        </li>
+        <li>
+          <a href="https://thunderstore.io/c/valheim/p/Smoothbrain/ServerCharacters/" target="_blank" rel="noopener">ServerCharacters</a>
+          — <strong>bắt buộc</strong>: nhân vật lưu trên server, chống mang đồ từ world khác.
+        </li>
+        <li>
+          <a href="https://thunderstore.io/c/valheim/p/Azumatt/AzuCraftyBoxes/" target="_blank" rel="noopener">AzuCraftyBoxes</a>
+          — craft / build lấy đồ từ rương gần đó (server có mod này thì client cũng phải có).
+        </li>
+      </ul>
+      <p class="note">
+        Cách vào: trong game chọn <strong>Join Game → Join IP</strong>, nhập địa chỉ và mật khẩu ở trên.
+        Nên launch game qua mod manager để BepInEx và mod được bật.
+      </p>
+    </section>
+
+    <section>
+      <h2>Lưu ý ServerCharacters</h2>
+      <p style="margin:0;color:var(--muted)">
+        Mod này là xương sống của server: profile nằm trên VPS, không mang đồ từ singleplayer / world khác vào được.
+        Hiện bản Thunderstore mới nhất (1.4.16) chưa chính thức hỗ trợ Valheim 1.0 — đang chờ Smoothbrain cập nhật
+        hoặc bản vá tương thích. Khi có bản mới, server sẽ cập nhật và thông báo lại version client cần khớp.
+      </p>
+    </section>
+
+    <footer>
+      Tuns Valheim · world <em>riskyyy</em> · private dedicated
+    </footer>
+  </main>
+</body>
+</html>

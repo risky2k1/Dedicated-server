@@ -8,7 +8,7 @@ PLUGINS_DIR="${ROOT_DIR}/config/bepinex/plugins"
 source "${ROOT_DIR}/native/lib/common.sh"
 load_env
 
-VERSION="${SERVER_DEVCOMMANDS_VERSION:-1.108.0}"
+VERSION="${SERVER_DEVCOMMANDS_VERSION:-1.110.0}"
 DOWNLOAD_URL="https://thunderstore.io/package/download/JereKuusela/Server_devcommands/${VERSION}/"
 
 "${ROOT_DIR}/linux/ensure-permissions.sh"

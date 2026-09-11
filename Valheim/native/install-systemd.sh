@@ -11,6 +11,14 @@ RUN_GROUP="$(id -gn "${RUN_USER}")"
 UNIT_PATH="/etc/systemd/system/${SERVICE_NAME}.service"
 TMP_UNIT="$(mktemp)"
 
+as_root() {
+  if [[ $EUID -ne 0 ]]; then
+    sudo "$@"
+  else
+    "$@"
+  fi
+}
+
 sed \
   -e "s|@RUN_USER@|${RUN_USER}|g" \
   -e "s|@RUN_GROUP@|${RUN_GROUP}|g" \
@@ -19,20 +27,30 @@ sed \
   -e "s|@START_SCRIPT@|${ROOT_DIR}/native/start-server.sh|g" \
   "${ROOT_DIR}/native/valheim.service.tpl" > "${TMP_UNIT}"
 
+as_root cp "${TMP_UNIT}" "${UNIT_PATH}"
+as_root systemctl daemon-reload
+as_root systemctl enable "${SERVICE_NAME}"
+echo "Installed systemd unit: ${UNIT_PATH}"
 if [[ $EUID -ne 0 ]]; then
-  sudo cp "${TMP_UNIT}" "${UNIT_PATH}"
-  sudo systemctl daemon-reload
-  sudo systemctl enable "${SERVICE_NAME}"
-  echo "Installed systemd unit: ${UNIT_PATH}"
   echo "Start with: sudo systemctl start ${SERVICE_NAME}"
-else
-  cp "${TMP_UNIT}" "${UNIT_PATH}"
-  systemctl daemon-reload
-  systemctl enable "${SERVICE_NAME}"
-  echo "Installed systemd unit: ${UNIT_PATH}"
 fi
 
 rm -f "${TMP_UNIT}"
+
+# Localhost status API for the public landing page (/api/status via nginx).
+STATUS_API_SRC="${ROOT_DIR}/native/status-api.py"
+STATUS_API_UNIT="/etc/systemd/system/valheim-status-api.service"
+if [[ -f "${STATUS_API_SRC}" ]]; then
+  as_root chmod +x "${STATUS_API_SRC}"
+  TMP_STATUS="$(mktemp)"
+  sed -e "s|@STATUS_API@|${STATUS_API_SRC}|g" \
+    "${ROOT_DIR}/native/valheim-status-api.service.tpl" > "${TMP_STATUS}"
+  as_root cp "${TMP_STATUS}" "${STATUS_API_UNIT}"
+  rm -f "${TMP_STATUS}"
+  as_root systemctl daemon-reload
+  as_root systemctl enable --now valheim-status-api
+  echo "Installed systemd unit: ${STATUS_API_UNIT}"
+fi
 
 install_cron_job() {
   local schedule="$1"

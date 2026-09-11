@@ -158,6 +158,91 @@
         border-color: rgba(157, 204, 143, 0.45);
       }
 
+      .status-row {
+        margin-top: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.65rem 1rem;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.28);
+        font-size: 0.95rem;
+      }
+
+      .status-stack {
+        margin-top: 1.25rem;
+        display: grid;
+        gap: 0.55rem;
+        justify-items: center;
+      }
+
+      .status-row .status-kind {
+        color: var(--accent);
+        font-family: Cinzel, Georgia, serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        min-width: 4.5rem;
+      }
+
+      .status-actions {
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .status-dot {
+        width: 0.65rem;
+        height: 0.65rem;
+        border-radius: 50%;
+        background: var(--muted);
+        flex-shrink: 0;
+      }
+
+      .status-dot.is-online {
+        background: #9dcc8f;
+        box-shadow: 0 0 0 3px rgba(157, 204, 143, 0.22);
+      }
+
+      .status-dot.is-offline {
+        background: #c47a6a;
+        box-shadow: 0 0 0 3px rgba(196, 122, 106, 0.22);
+      }
+
+      .status-dot.is-checking {
+        background: var(--accent);
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      .status-meta {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .status-refresh {
+        margin-left: 0.25rem;
+        padding: 0.2rem 0.55rem;
+        border: 1px solid var(--line);
+        border-radius: 0.3rem;
+        background: transparent;
+        color: var(--accent);
+        font: inherit;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      .status-refresh:hover,
+      .status-refresh:focus-visible {
+        background: rgba(196, 163, 90, 0.15);
+        outline: none;
+      }
+
       section {
         margin-top: 1.75rem;
         padding: 1.5rem 1.4rem;
@@ -244,10 +329,10 @@
           <div class="pass-row">
             <code
               id="server-pass"
-              data-pass="122333"
+              data-pass="4sQHDqfdYIFB19Xx"
               data-hidden="true"
               aria-label="Mật khẩu server"
-              >••••••</code
+              >••••••••••••••••</code
             >
             <button
               type="button"
@@ -281,6 +366,33 @@
                   d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"
                 />
               </svg>
+            </button>
+          </div>
+        </div>
+        <div class="status-stack" aria-label="Trạng thái server">
+          <div class="status-row" id="process-status" role="status" aria-live="polite">
+            <span class="status-kind">Process</span>
+            <span
+              class="status-dot is-checking"
+              id="process-dot"
+              aria-hidden="true"
+            ></span>
+            <span id="process-label">Đang kiểm tra process…</span>
+            <span class="status-meta" id="process-meta"></span>
+          </div>
+          <div class="status-row" id="server-status" role="status" aria-live="polite">
+            <span class="status-kind">Steam</span>
+            <span
+              class="status-dot is-checking"
+              id="status-dot"
+              aria-hidden="true"
+            ></span>
+            <span id="status-label">Đang kiểm tra Steam…</span>
+            <span class="status-meta" id="status-meta"></span>
+          </div>
+          <div class="status-actions">
+            <button type="button" class="status-refresh" id="status-refresh">
+              Refresh
             </button>
           </div>
         </div>
@@ -318,39 +430,19 @@
               href="https://github.com/Kesomannen/gale/releases/download/1.22.2/Gale_1.22.2_x64_en-US.msi"
               >Gale 1.22.2</a
             >
-            (Hexium mod manager, file .msi) — không dùng Thunderstore/r2modman
-            cho profile server này.
           </li>
           <li>
             Trong Gale, search và cài các mod sau (đúng version):
             <ul>
               <li><strong>BepInExPack Valheim</strong> 5.4.2350</li>
-              <li>
-                <strong>ServerCharacters</strong> 1.4.17 —
-                <strong>bắt buộc</strong>: nhân vật lưu trên server, chống mang
-                đồ từ world khác.
-              </li>
-              <li>
-                <strong>AzuCraftyBoxes</strong> 1.8.18 — craft / build lấy đồ từ
-                rương gần đó (server có thì client cũng phải có).
-              </li>
+              <li><strong>ServerCharacters</strong> 1.4.17</li>
+              <li><strong>AzuCraftyBoxes</strong> 1.8.18</li>
             </ul>
           </li>
         </ul>
         <p class="note">
           Cách vào: mở game bằng <strong>Gale</strong>, rồi
-          <strong>Join Game → Join IP</strong> với địa chỉ và mật khẩu ở trên.
-          Client phải khớp đúng version mod.
-        </p>
-      </section>
-
-      <section>
-        <h2>Lưu ý ServerCharacters</h2>
-        <p style="margin: 0; color: var(--muted)">
-          Mod này là xương sống của server: profile nằm trên VPS, không mang đồ
-          từ singleplayer / world khác vào được. Bản chuẩn hiện tại:
-          <strong>1.4.17</strong> trên Hexium (Smoothbrain không còn publish lên
-          Thunderstore) — search tên trong Gale để cài.
+          <strong>Join Game → Join IP</strong> với địa chỉ và mật khẩu ở trên
         </p>
       </section>
 
@@ -361,36 +453,44 @@
         var pass = document.getElementById("server-pass");
         var btn = document.getElementById("toggle-pass");
         var copyBtn = document.getElementById("copy-pass");
-        if (!pass || !btn) return;
-        var real = pass.getAttribute("data-pass") || "";
-        var mask = "•".repeat(Math.max(real.length, 6));
-        btn.addEventListener("click", function () {
-          var show = btn.getAttribute("aria-pressed") !== "true";
-          btn.setAttribute("aria-pressed", show ? "true" : "false");
-          btn.setAttribute("aria-label", show ? "Ẩn mật khẩu" : "Hiện mật khẩu");
-          pass.setAttribute("data-hidden", show ? "false" : "true");
-          pass.textContent = show ? real : mask;
-        });
-        if (!copyBtn) return;
-        copyBtn.addEventListener("click", function () {
-          var done = function () {
-            copyBtn.classList.add("is-copied");
-            copyBtn.setAttribute("aria-label", "Đã copy");
-            copyBtn.title = "Đã copy";
-            setTimeout(function () {
-              copyBtn.classList.remove("is-copied");
-              copyBtn.setAttribute("aria-label", "Copy mật khẩu");
-              copyBtn.title = "Copy mật khẩu";
-            }, 1500);
-          };
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(real).then(done).catch(function () {
-              fallbackCopy(real, done);
+        if (pass && btn) {
+          var real = pass.getAttribute("data-pass") || "";
+          var mask = "•".repeat(Math.max(real.length, 6));
+          btn.addEventListener("click", function () {
+            var show = btn.getAttribute("aria-pressed") !== "true";
+            btn.setAttribute("aria-pressed", show ? "true" : "false");
+            btn.setAttribute(
+              "aria-label",
+              show ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+            );
+            pass.setAttribute("data-hidden", show ? "false" : "true");
+            pass.textContent = show ? real : mask;
+          });
+          if (copyBtn) {
+            copyBtn.addEventListener("click", function () {
+              var done = function () {
+                copyBtn.classList.add("is-copied");
+                copyBtn.setAttribute("aria-label", "Đã copy");
+                copyBtn.title = "Đã copy";
+                setTimeout(function () {
+                  copyBtn.classList.remove("is-copied");
+                  copyBtn.setAttribute("aria-label", "Copy mật khẩu");
+                  copyBtn.title = "Copy mật khẩu";
+                }, 1500);
+              };
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard
+                  .writeText(real)
+                  .then(done)
+                  .catch(function () {
+                    fallbackCopy(real, done);
+                  });
+              } else {
+                fallbackCopy(real, done);
+              }
             });
-          } else {
-            fallbackCopy(real, done);
           }
-        });
+        }
         function fallbackCopy(text, done) {
           var ta = document.createElement("textarea");
           ta.value = text;
@@ -406,6 +506,152 @@
             document.body.removeChild(ta);
           }
         }
+
+        var SERVER_HOST = "180.93.113.164";
+        var GAME_PORT = 2456;
+        var VALHEIM_APPID = 892970;
+        var REFRESH_MS = 60000;
+        var STATUS_API = "/api/status";
+        var processDot = document.getElementById("process-dot");
+        var processLabel = document.getElementById("process-label");
+        var processMeta = document.getElementById("process-meta");
+        var dot = document.getElementById("status-dot");
+        var label = document.getElementById("status-label");
+        var meta = document.getElementById("status-meta");
+        var refreshBtn = document.getElementById("status-refresh");
+        if (!dot || !label) return;
+
+        function setRow(dotEl, labelEl, metaEl, state, text, detail) {
+          if (dotEl) dotEl.className = "status-dot is-" + state;
+          if (labelEl) labelEl.textContent = text;
+          if (metaEl) metaEl.textContent = detail || "";
+        }
+
+        function setSteamStatus(state, text, detail) {
+          setRow(dot, label, meta, state, text, detail);
+        }
+
+        function setProcessStatus(state, text, detail) {
+          setRow(processDot, processLabel, processMeta, state, text, detail);
+        }
+
+        function isValheimServer(s) {
+          if (!s) return false;
+          if (Number(s.appid) === VALHEIM_APPID) return true;
+          if (Number(s.gameport) === GAME_PORT) return true;
+          var addr = String(s.addr || "");
+          return (
+            addr.indexOf(":" + GAME_PORT) !== -1 ||
+            addr.indexOf(":" + (GAME_PORT + 1)) !== -1
+          );
+        }
+
+        function parseSteamPayload(raw) {
+          var data = typeof raw === "string" ? JSON.parse(raw) : raw;
+          var servers =
+            (data && data.response && data.response.servers) || [];
+          return servers.some(isValheimServer);
+        }
+
+        function nowTime() {
+          return (
+            new Date().toLocaleTimeString("vi-VN", { hour12: false }) || ""
+          );
+        }
+
+        function fetchSteamJson() {
+          var steamUrl =
+            "https://api.steampowered.com/ISteamApps/GetServersAtAddress/v1/?addr=" +
+            encodeURIComponent(SERVER_HOST) +
+            "&format=json";
+          return fetch(steamUrl, { cache: "no-store" })
+            .then(function (res) {
+              if (!res.ok) throw new Error("steam http " + res.status);
+              return res.json();
+            })
+            .catch(function () {
+              var proxied =
+                "https://api.allorigins.win/raw?url=" +
+                encodeURIComponent(steamUrl);
+              return fetch(proxied, { cache: "no-store" }).then(function (
+                res
+              ) {
+                if (!res.ok) throw new Error("proxy http " + res.status);
+                return res.json();
+              });
+            });
+        }
+
+        function checkProcessStatus() {
+          if (!processDot || !processLabel) return Promise.resolve();
+          setProcessStatus("checking", "Đang kiểm tra process…", "");
+          return fetch(STATUS_API, { cache: "no-store" })
+            .then(function (res) {
+              if (!res.ok) throw new Error("status http " + res.status);
+              return res.json();
+            })
+            .then(function (data) {
+              var time = nowTime();
+              var pid = data.pid ? "pid " + data.pid : data.state || "";
+              if (data.process_online) {
+                setProcessStatus(
+                  "online",
+                  "Process đang chạy",
+                  pid + " · " + time
+                );
+              } else if (data.active) {
+                setProcessStatus(
+                  "offline",
+                  "Service up, chưa listen port",
+                  pid + " · " + time
+                );
+              } else {
+                setProcessStatus(
+                  "offline",
+                  "Process đã dừng",
+                  (data.state || "inactive") + " · " + time
+                );
+              }
+            })
+            .catch(function () {
+              setProcessStatus(
+                "offline",
+                "Không đọc được process",
+                "thiếu /api/status"
+              );
+            });
+        }
+
+        function checkSteamStatus() {
+          setSteamStatus("checking", "Đang kiểm tra Steam…", "");
+          return fetchSteamJson()
+            .then(function (data) {
+              var online = parseSteamPayload(data);
+              var time = nowTime();
+              if (online) {
+                setSteamStatus("online", "List trên Steam", "cập nhật " + time);
+              } else {
+                setSteamStatus(
+                  "offline",
+                  "Chưa list Steam / offline",
+                  "cập nhật " + time
+                );
+              }
+            })
+            .catch(function () {
+              setSteamStatus("offline", "Không kiểm tra được Steam", "thử lại sau");
+            });
+        }
+
+        function checkStatus() {
+          return Promise.all([checkProcessStatus(), checkSteamStatus()]);
+        }
+
+        if (refreshBtn) {
+          refreshBtn.addEventListener("click", checkStatus);
+        }
+        checkStatus();
+        setInterval(checkStatus, REFRESH_MS);
       })();
     </script>
   </body>

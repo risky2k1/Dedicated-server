@@ -171,8 +171,8 @@ Ví dụ `.env` (giá trị có khoảng trắng **phải** có dấu `"`):
 ```bash
 SERVER_NAME="Tuns Valheim Server"
 WORLD_NAME=SuperSeed2
-SERVER_PASS="123qwe"
-SERVER_PUBLIC=false
+SERVER_PASS="change-me-strong-pass"
+SERVER_PUBLIC=true
 BEPINEX=true
 BACKUPS_CRON="0 */6 * * *"
 UPDATE_CRON="*/15 * * * *"

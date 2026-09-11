@@ -9,7 +9,7 @@ load_env
 ensure_layout
 
 VERSION="${BEPINEX_PACK_VERSION:-5.4.2350}"
-DOWNLOAD_URL="https://thunderstore.io/package/download/denikson/BepInExPack_Valheim/${VERSION}/"
+DOWNLOAD_URL="$(hexium_resolve_download_url denikson BepInExPack_Valheim "${VERSION}")"
 
 if [[ ! -f "${SERVER_DIR}/valheim_server.x86_64" ]]; then
   echo "Valheim server not found. Run native/install-server.sh first." >&2
@@ -19,8 +19,8 @@ fi
 tmp_dir="$(mktemp -d)"
 trap 'rm -rf "${tmp_dir}"' EXIT
 
-echo "Downloading BepInExPack ${VERSION}..."
-curl -fsSL -o "${tmp_dir}/BepInExPack.zip" "${DOWNLOAD_URL}"
+echo "Downloading BepInExPack ${VERSION} from Hexium..."
+curl -fsSL -A 'Valheim-native-setup' -o "${tmp_dir}/BepInExPack.zip" "${DOWNLOAD_URL}"
 unzip -qo "${tmp_dir}/BepInExPack.zip" -d "${tmp_dir}"
 
 cp -a "${tmp_dir}/BepInExPack_Valheim/." "${SERVER_DIR}/"

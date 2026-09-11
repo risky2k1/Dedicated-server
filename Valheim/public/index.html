@@ -1,227 +1,412 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tuns Valheim Server</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg0: #0c1210;
-      --bg1: #152019;
-      --ink: #e8efe6;
-      --muted: #9bb09a;
-      --accent: #c4a35a;
-      --accent-dim: #8a7340;
-      --panel: rgba(18, 28, 22, 0.72);
-      --line: rgba(196, 163, 90, 0.28);
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tuns Valheim Server</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg0: #0c1210;
+        --bg1: #152019;
+        --ink: #e8efe6;
+        --muted: #9bb09a;
+        --accent: #c4a35a;
+        --accent-dim: #8a7340;
+        --panel: rgba(18, 28, 22, 0.72);
+        --line: rgba(196, 163, 90, 0.28);
+      }
 
-    * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; }
-    body {
-      font-family: "Source Sans 3", system-ui, sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(196, 163, 90, 0.18), transparent 55%),
-        linear-gradient(160deg, var(--bg0), var(--bg1) 45%, #0a100e);
-      line-height: 1.55;
-    }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+      body {
+        font-family: "Source Sans 3", system-ui, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            ellipse 80% 50% at 50% -10%,
+            rgba(196, 163, 90, 0.18),
+            transparent 55%
+          ),
+          linear-gradient(160deg, var(--bg0), var(--bg1) 45%, #0a100e);
+        line-height: 1.55;
+      }
 
-    .wrap {
-      width: min(920px, calc(100% - 2rem));
-      margin: 0 auto;
-      padding: 3.5rem 0 4rem;
-    }
+      .wrap {
+        width: min(920px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 3.5rem 0 4rem;
+      }
 
-    .hero {
-      text-align: center;
-      padding: 2.5rem 1.5rem 2rem;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(196, 163, 90, 0.08), transparent 55%),
-        var(--panel);
-      backdrop-filter: blur(8px);
-    }
+      .hero {
+        text-align: center;
+        padding: 2.5rem 1.5rem 2rem;
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(196, 163, 90, 0.08), transparent 55%),
+          var(--panel);
+        backdrop-filter: blur(8px);
+      }
 
-    .eyebrow {
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-size: 0.75rem;
-      margin: 0 0 0.85rem;
-    }
+      .eyebrow {
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-size: 0.75rem;
+        margin: 0 0 0.85rem;
+      }
 
-    h1 {
-      font-family: Cinzel, Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(1.8rem, 4vw, 2.6rem);
-      margin: 0 0 0.6rem;
-      letter-spacing: 0.04em;
-    }
+      h1 {
+        font-family: Cinzel, Georgia, serif;
+        font-weight: 700;
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        margin: 0 0 0.6rem;
+        letter-spacing: 0.04em;
+      }
 
-    .tagline {
-      margin: 0 auto;
-      max-width: 36rem;
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
+      .tagline {
+        margin: 0 auto;
+        max-width: 36rem;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
 
-    .join {
-      margin-top: 1.75rem;
-      display: inline-grid;
-      gap: 0.35rem;
-      padding: 1rem 1.4rem;
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, 0.28);
-      text-align: left;
-    }
+      .join {
+        margin-top: 1.75rem;
+        display: inline-grid;
+        gap: 0.35rem;
+        padding: 1rem 1.4rem;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.28);
+        text-align: left;
+      }
 
-    .join strong {
-      color: var(--accent);
-      font-family: Cinzel, Georgia, serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-    }
+      .join strong {
+        color: var(--accent);
+        font-family: Cinzel, Georgia, serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+      }
 
-    .join code {
-      font-size: 1.15rem;
-      color: var(--ink);
-    }
+      .join code {
+        font-size: 1.15rem;
+        color: var(--ink);
+      }
 
-    section {
-      margin-top: 1.75rem;
-      padding: 1.5rem 1.4rem;
-      border: 1px solid var(--line);
-      background: var(--panel);
-    }
+      .pass-row {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
 
-    h2 {
-      font-family: Cinzel, Georgia, serif;
-      font-size: 1.15rem;
-      margin: 0 0 0.9rem;
-      color: var(--accent);
-      letter-spacing: 0.06em;
-    }
+      .pass-row code[data-hidden="true"] {
+        letter-spacing: 0.12em;
+        user-select: none;
+      }
 
-    ul {
-      margin: 0;
-      padding-left: 1.15rem;
-    }
+      .pass-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 0.35rem;
+        background: rgba(0, 0, 0, 0.35);
+        color: var(--accent);
+        cursor: pointer;
+      }
 
-    li { margin: 0.35rem 0; }
+      .pass-toggle:hover,
+      .pass-toggle:focus-visible {
+        background: rgba(196, 163, 90, 0.15);
+        outline: none;
+      }
 
-    .grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
+      .pass-toggle svg {
+        width: 1.1rem;
+        height: 1.1rem;
+        fill: currentColor;
+      }
 
-    .card {
-      padding: 1rem 1.1rem;
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, 0.22);
-    }
+      .pass-toggle .icon-hide {
+        display: none;
+      }
 
-    .card h3 {
-      margin: 0 0 0.45rem;
-      font-family: Cinzel, Georgia, serif;
-      font-size: 0.95rem;
-      color: var(--accent);
-    }
+      .pass-toggle[aria-pressed="true"] .icon-show {
+        display: none;
+      }
 
-    .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+      .pass-toggle[aria-pressed="true"] .icon-hide {
+        display: block;
+      }
 
-    .note {
-      margin-top: 1rem;
-      padding: 0.9rem 1rem;
-      border-left: 3px solid var(--accent-dim);
-      background: rgba(196, 163, 90, 0.08);
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
+      .pass-toggle.is-copied {
+        color: #9dcc8f;
+        border-color: rgba(157, 204, 143, 0.45);
+      }
 
-    footer {
-      margin-top: 2rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
+      section {
+        margin-top: 1.75rem;
+        padding: 1.5rem 1.4rem;
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
 
-    a { color: var(--accent); }
-  </style>
-</head>
-<body>
-  <main class="wrap">
-    <header class="hero">
-      <p class="eyebrow">Valheim 1.0 · Dedicated</p>
-      <h1>Tuns Valheim Server</h1>
-      <p class="tagline">
-        Server riêng cho nhóm bạn — world mới, seed cố định, chơi thoải mái không sợ mất đồ khi chết nặng.
-      </p>
-      <div class="join" aria-label="Thông tin join">
-        <strong>Join IP</strong>
-        <code>180.93.113.164:2456</code>
-        <strong>Password</strong>
-        <code>122333</code>
-      </div>
-    </header>
+      h2 {
+        font-family: Cinzel, Georgia, serif;
+        font-size: 1.15rem;
+        margin: 0 0 0.9rem;
+        color: var(--accent);
+        letter-spacing: 0.06em;
+      }
 
-    <section>
-      <h2>World</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Tên &amp; seed</h3>
-          <p><strong style="color:var(--ink)">riskyyy</strong></p>
+      ul {
+        margin: 0;
+        padding-left: 1.15rem;
+      }
+
+      li {
+        margin: 0.35rem 0;
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .card {
+        padding: 1rem 1.1rem;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.22);
+      }
+
+      .card h3 {
+        margin: 0 0 0.45rem;
+        font-family: Cinzel, Georgia, serif;
+        font-size: 0.95rem;
+        color: var(--accent);
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .note {
+        margin-top: 1rem;
+        padding: 0.9rem 1rem;
+        border-left: 3px solid var(--accent-dim);
+        background: rgba(196, 163, 90, 0.08);
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      footer {
+        margin-top: 2rem;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      a {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="hero">
+        <p class="eyebrow">Valheim 1.0 · Dedicated</p>
+        <h1>Tuns Valheim Server</h1>
+        <!-- <p class="tagline">
+          Server riêng cho nhóm bạn — world mới, seed cố định, chơi thoải mái
+          không sợ mất đồ khi chết nặng.
+        </p> -->
+        <div class="join" aria-label="Thông tin join">
+          <strong>Join IP</strong>
+          <code>180.93.113.164:2456</code>
+          <strong>Password</strong>
+          <div class="pass-row">
+            <code
+              id="server-pass"
+              data-pass="122333"
+              data-hidden="true"
+              aria-label="Mật khẩu server"
+              >••••••</code
+            >
+            <button
+              type="button"
+              class="pass-toggle"
+              id="toggle-pass"
+              aria-pressed="false"
+              aria-controls="server-pass"
+              aria-label="Hiện mật khẩu"
+              title="Hiện / ẩn mật khẩu"
+            >
+              <svg class="icon-show" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"
+                />
+              </svg>
+              <svg class="icon-hide" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M2.1 3.51 3.5 2.1l18.4 18.39-1.41 1.41-3.13-3.12A12.3 12.3 0 0 1 12 19c-7 0-10-7-10-7a18.9 18.9 0 0 1 5.2-5.66L2.1 3.51zM12 7a5 5 0 0 1 4.9 4.05l-1.55-1.55A3 3 0 0 0 12 9a3 3 0 0 0-2.5 4.35L8 11.85A5 5 0 0 1 12 7zm9.9 5S18.9 19 12 19a10.4 10.4 0 0 1-2.7-.36l1.7-1.7A5 5 0 0 0 16.7 11L21.9 12z"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="pass-toggle"
+              id="copy-pass"
+              aria-label="Copy mật khẩu"
+              title="Copy mật khẩu"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="card">
-          <h3>Resources ×2</h3>
-          <p>x2 tài nguyên.</p>
+      </header>
+
+      <section>
+        <h2>World</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Tên &amp; seed</h3>
+            <p><strong style="color: var(--ink)">riskyyy</strong></p>
+          </div>
+          <div class="card">
+            <h3>Resources ×2</h3>
+            <p>x2 tài nguyên.</p>
+          </div>
+          <div class="card">
+            <h3>Death Penalty</h3>
+            <p>
+              Vẫn rơi hết đồ khi chết
+              <br />
+              Nhưng skills giảm rất ít (-1%)
+            </p>
+          </div>
         </div>
-        <div class="card">
-          <h3>Death Penalty</h3>
-          <p>Vẫn rơi hết đồ khi chết nhưng skills giảm rất ít</p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section>
-      <h2>Cần cài trên máy chơi </h2>
-      <ul>
-        <li>Valheim bản <strong>1.0</strong> (Steam).</li>
-        <li>
-          <a href="https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/" target="_blank" rel="noopener">BepInExPack Valheim</a>
-          — khuyến nghị dùng r2modman / Thunderstore Mod Manager.
-        </li>
-        <li>
-          <a href="https://thunderstore.io/c/valheim/p/Smoothbrain/ServerCharacters/" target="_blank" rel="noopener">ServerCharacters</a>
-          — <strong>bắt buộc</strong>: nhân vật lưu trên server, chống mang đồ từ world khác.
-        </li>
-        <li>
-          <a href="https://thunderstore.io/c/valheim/p/Azumatt/AzuCraftyBoxes/" target="_blank" rel="noopener">AzuCraftyBoxes</a>
-          — craft / build lấy đồ từ rương gần đó (server có mod này thì client cũng phải có).
-        </li>
-      </ul>
-      <p class="note">
-        Cách vào: trong game chọn <strong>Join Game → Join IP</strong>, nhập địa chỉ và mật khẩu ở trên.
-        Nên launch game qua mod manager để BepInEx và mod được bật.
-      </p>
-    </section>
+      <section>
+        <h2>Cần cài trên máy chơi</h2>
+        <ul>
+          <li>Valheim v <strong>1.0</strong> (Steam).</li>
+          <li>
+            Cài
+            <a
+              href="https://github.com/Kesomannen/gale/releases/download/1.22.2/Gale_1.22.2_x64_en-US.msi"
+              >Gale 1.22.2</a
+            >
+            (Hexium mod manager, file .msi) — không dùng Thunderstore/r2modman
+            cho profile server này.
+          </li>
+          <li>
+            Trong Gale, search và cài các mod sau (đúng version):
+            <ul>
+              <li><strong>BepInExPack Valheim</strong> 5.4.2350</li>
+              <li>
+                <strong>ServerCharacters</strong> 1.4.17 —
+                <strong>bắt buộc</strong>: nhân vật lưu trên server, chống mang
+                đồ từ world khác.
+              </li>
+              <li>
+                <strong>AzuCraftyBoxes</strong> 1.8.18 — craft / build lấy đồ từ
+                rương gần đó (server có thì client cũng phải có).
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p class="note">
+          Cách vào: mở game bằng <strong>Gale</strong>, rồi
+          <strong>Join Game → Join IP</strong> với địa chỉ và mật khẩu ở trên.
+          Client phải khớp đúng version mod.
+        </p>
+      </section>
 
-    <section>
-      <h2>Lưu ý ServerCharacters</h2>
-      <p style="margin:0;color:var(--muted)">
-        Mod này là xương sống của server: profile nằm trên VPS, không mang đồ từ singleplayer / world khác vào được.
-        Hiện bản Thunderstore mới nhất (1.4.16) chưa chính thức hỗ trợ Valheim 1.0 — đang chờ Smoothbrain cập nhật
-        hoặc bản vá tương thích. Khi có bản mới, server sẽ cập nhật và thông báo lại version client cần khớp.
-      </p>
-    </section>
+      <section>
+        <h2>Lưu ý ServerCharacters</h2>
+        <p style="margin: 0; color: var(--muted)">
+          Mod này là xương sống của server: profile nằm trên VPS, không mang đồ
+          từ singleplayer / world khác vào được. Bản chuẩn hiện tại:
+          <strong>1.4.17</strong> trên Hexium (Smoothbrain không còn publish lên
+          Thunderstore) — search tên trong Gale để cài.
+        </p>
+      </section>
 
-    <footer>
-      Tuns Valheim · world <em>riskyyy</em> · private dedicated
-    </footer>
-  </main>
-</body>
+      <footer>Tuns Valheim · world <em>riskyyy</em> · private dedicated</footer>
+    </main>
+    <script>
+      (function () {
+        var pass = document.getElementById("server-pass");
+        var btn = document.getElementById("toggle-pass");
+        var copyBtn = document.getElementById("copy-pass");
+        if (!pass || !btn) return;
+        var real = pass.getAttribute("data-pass") || "";
+        var mask = "•".repeat(Math.max(real.length, 6));
+        btn.addEventListener("click", function () {
+          var show = btn.getAttribute("aria-pressed") !== "true";
+          btn.setAttribute("aria-pressed", show ? "true" : "false");
+          btn.setAttribute("aria-label", show ? "Ẩn mật khẩu" : "Hiện mật khẩu");
+          pass.setAttribute("data-hidden", show ? "false" : "true");
+          pass.textContent = show ? real : mask;
+        });
+        if (!copyBtn) return;
+        copyBtn.addEventListener("click", function () {
+          var done = function () {
+            copyBtn.classList.add("is-copied");
+            copyBtn.setAttribute("aria-label", "Đã copy");
+            copyBtn.title = "Đã copy";
+            setTimeout(function () {
+              copyBtn.classList.remove("is-copied");
+              copyBtn.setAttribute("aria-label", "Copy mật khẩu");
+              copyBtn.title = "Copy mật khẩu";
+            }, 1500);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(real).then(done).catch(function () {
+              fallbackCopy(real, done);
+            });
+          } else {
+            fallbackCopy(real, done);
+          }
+        });
+        function fallbackCopy(text, done) {
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          try {
+            document.execCommand("copy");
+            done();
+          } finally {
+            document.body.removeChild(ta);
+          }
+        }
+      })();
+    </script>
+  </body>
 </html>

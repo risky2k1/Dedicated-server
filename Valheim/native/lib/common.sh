@@ -103,3 +103,37 @@ build_server_args() {
 
   printf '%s\n' "${args[@]}"
 }
+
+# Resolve a Hexium package zip URL (Thunderstore-compatible experimental API).
+# Usage: hexium_resolve_download_url OWNER NAME [VERSION]
+# Prints download URL to stdout. Empty VERSION = latest.
+hexium_resolve_download_url() {
+  local owner="${1:?owner required}"
+  local name="${2:?name required}"
+  local want_ver="${3:-}"
+  local api="https://valheim.hexium.gg/api/experimental/package/${owner}/${name}/"
+  local json latest_ver download_url icon upload_id
+
+  json="$(curl -fsSL -A 'Valheim-native-setup' "${api}")" || {
+    echo "Failed to query Hexium API: ${api}" >&2
+    return 1
+  }
+
+  latest_ver="$(printf '%s' "${json}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["latest"]["version_number"])')"
+  download_url="$(printf '%s' "${json}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["latest"]["download_url"])')"
+  icon="$(printf '%s' "${json}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["latest"].get("icon",""))')"
+
+  if [[ -z "${want_ver}" || "${want_ver}" == "${latest_ver}" ]]; then
+    printf '%s\n' "${download_url}"
+    return 0
+  fi
+
+  if [[ "${icon}" =~ /upload/([0-9]+)/ ]]; then
+    upload_id="${BASH_REMATCH[1]}"
+    printf 'https://cdn.hexium.gg/upload/%s/%s.zip\n' "${upload_id}" "${want_ver}"
+    return 0
+  fi
+
+  echo "Cannot resolve Hexium upload id for ${owner}/${name}@${want_ver}" >&2
+  return 1
+}

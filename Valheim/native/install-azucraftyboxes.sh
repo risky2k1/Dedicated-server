@@ -8,8 +8,8 @@ PLUGINS_DIR="${ROOT_DIR}/config/bepinex/plugins"
 source "${ROOT_DIR}/native/lib/common.sh"
 load_env
 
-VERSION="${AZUCRAFTYBOXES_VERSION:-1.8.15}"
-DOWNLOAD_URL="https://thunderstore.io/package/download/Azumatt/AzuCraftyBoxes/${VERSION}/"
+VERSION="${AZUCRAFTYBOXES_VERSION:-1.8.18}"
+DOWNLOAD_URL="$(hexium_resolve_download_url Azumatt AzuCraftyBoxes "${VERSION}")"
 
 "${ROOT_DIR}/linux/ensure-permissions.sh"
 mkdir -p "${PLUGINS_DIR}"
@@ -17,8 +17,8 @@ mkdir -p "${PLUGINS_DIR}"
 tmp_dir="$(mktemp -d)"
 trap 'rm -rf "${tmp_dir}"' EXIT
 
-echo "Downloading AzuCraftyBoxes ${VERSION}..."
-curl -fsSL -o "${tmp_dir}/AzuCraftyBoxes.zip" "${DOWNLOAD_URL}"
+echo "Downloading AzuCraftyBoxes ${VERSION} from Hexium..."
+curl -fsSL -A 'Valheim-native-setup' -o "${tmp_dir}/AzuCraftyBoxes.zip" "${DOWNLOAD_URL}"
 unzip -qo "${tmp_dir}/AzuCraftyBoxes.zip" -d "${tmp_dir}/extracted"
 
 shopt -s nullglob
@@ -36,4 +36,4 @@ done
 
 echo ""
 echo "Restart server:  sudo systemctl restart valheim"
-echo "All clients must install AzuCraftyBoxes ${VERSION} (Azumatt) via r2modman/Thunderstore."
+echo "All clients must install AzuCraftyBoxes ${VERSION} (Azumatt) via Gale/Hexium."

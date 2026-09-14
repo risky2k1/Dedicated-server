@@ -9,6 +9,12 @@ load_env
 link_saved_dir
 apply_env_to_ini
 
+if [[ "$(id -un)" == "root" ]]; then
+  echo "Refusing to run as root — Conan Enhanced exits immediately as root." >&2
+  echo "Start via systemd (sudo systemctl start conan) or: sudo -u conan $0" >&2
+  exit 1
+fi
+
 if [[ ! -f "${CONAN_BINARY}" ]]; then
   echo "Conan server not installed. Run ./native/setup.sh first." >&2
   exit 1

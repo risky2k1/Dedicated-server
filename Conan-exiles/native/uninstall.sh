@@ -2,8 +2,11 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=native/lib/common.sh
+source "${ROOT_DIR}/native/lib/common.sh"
+load_env
+
 SERVICE_NAME="${CONAN_SERVICE_NAME:-conan}"
-REPO_DIR="$(cd "${ROOT_DIR}/.." && pwd)"
 
 echo "=== Conan Exiles native uninstall ==="
 echo "Project: ${ROOT_DIR}"
@@ -24,10 +27,27 @@ if [[ -f "/etc/systemd/system/${SERVICE_NAME}.service" ]]; then
   echo "Removed systemd unit: ${SERVICE_NAME}.service"
 fi
 
-if crontab -l >/dev/null 2>&1; then
-  crontab -l | grep -v 'conan-native' | crontab - || true
-  echo "Removed conan cron jobs."
-fi
+remove_conan_cron() {
+  local user="$1"
+  local existing=""
+
+  [[ -z "${user}" ]] && return 0
+  id "${user}" >/dev/null 2>&1 || return 0
+
+  if [[ $EUID -eq 0 ]]; then
+    existing="$(crontab -u "${user}" -l 2>/dev/null || true)"
+    if [[ -n "${existing}" ]]; then
+      grep -v 'conan-native' <<<"${existing}" | crontab -u "${user}" - || true
+    fi
+  elif [[ "$(id -un)" == "${user}" ]] && crontab -l >/dev/null 2>&1; then
+    crontab -l | grep -v 'conan-native' | crontab - || true
+  fi
+}
+
+for cron_user in "${CONAN_RUN_USER:-conan}" root "${SUDO_USER:-}"; do
+  remove_conan_cron "${cron_user}"
+done
+echo "Removed conan cron jobs."
 
 if pgrep -f "ConanSandboxServer-Linux-Shipping" >/dev/null 2>&1; then
   pkill -INT -f "ConanSandboxServer-Linux-Shipping" || true

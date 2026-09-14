@@ -173,7 +173,7 @@ apply_env_to_ini() {
 
   ini_set "${game}" "/Script/Engine.GameSession" "MaxPlayers" "${MAX_PLAYERS:-40}"
 
-  if env_bool "${RCON_ENABLED:-true}"; then
+  if env_bool "${RCON_ENABLED:-false}"; then
     ini_set "${game}" "RconPlugin" "RconEnabled" "True"
     ini_set "${game}" "RconPlugin" "RconPassword" "${RCON_PASSWORD:-${ADMIN_PASSWORD}}"
     ini_set "${game}" "RconPlugin" "RconPort" "${RCON_PORT:-25575}"
@@ -198,7 +198,7 @@ build_server_args() {
     args+=(-ServerPassword="${SERVER_PASSWORD}")
   fi
 
-  if env_bool "${RCON_ENABLED:-true}"; then
+  if env_bool "${RCON_ENABLED:-false}"; then
     args+=(
       -RconEnabled=1
       -RconPassword="${RCON_PASSWORD:-${ADMIN_PASSWORD}}"

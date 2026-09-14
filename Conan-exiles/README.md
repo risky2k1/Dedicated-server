@@ -24,7 +24,7 @@ cp .env.example .env
 nano .env   # ADMIN_PASSWORD, SERVER_NAME, SERVER_PASSWORD, MAX_PLAYERS
 
 chmod +x native/*.sh
-./native/setup.sh
+sudo ./native/setup.sh   # hoặc chạy bằng user thường + sudo khi cần
 
 sudo ufw allow 7777:7778/udp
 sudo ufw allow 27015/udp
@@ -37,7 +37,7 @@ Script tự:
 1. Cài SteamCMD + Conan dedicated server (AppID **443030**, depot **Linux**)
 2. Ghi config từ `.env` vào `config/Saved/Config/LinuxServer/`
 3. Symlink `server/ConanSandbox/Saved` → `config/Saved`
-4. Tạo systemd service `conan` + cron backup
+4. Tạo user `conan` (nếu setup bằng root SSH), systemd service `conan` + cron backup
 
 **Lệnh thường dùng:**
 
@@ -81,6 +81,7 @@ tail -f config/Saved/Logs/ConanSandbox.log
 | `PVP_ENABLED` | `true` / `false` |
 | `RCON_ENABLED` | RCON (shutdown/backup sạch hơn) |
 | `BACKUPS_CRON` | Lịch backup `config/Saved` |
+| `CONAN_RUN_USER` | User chạy systemd/cron (mặc định `conan` khi setup bằng root) |
 
 Giá trị có khoảng trắng hoặc cron (`*`) phải bọc `"` — vd: `SERVER_NAME="Tun Conan"`, `BACKUPS_CRON="0 */6 * * *"`.
 
@@ -128,6 +129,15 @@ test -f server/ConanSandbox/Binaries/Linux/ConanSandboxServer-Linux-Shipping && 
 
 **OOM / bị kill**  
 → RAM thiếu. Enhanced cần ~9 GB idle.
+
+**`Refusing to run with the root privileges` / core-dump loop**  
+→ Service đang chạy dưới `root`. Conan Enhanced **không** chạy được với root. Chạy lại:
+
+```bash
+sudo systemctl stop conan
+sudo ./native/install-systemd.sh   # tạo user conan + chown + sửa unit
+sudo systemctl start conan
+```
 
 **Client không vào được**  
 → Mở UDP 7777–7778 và 27015. Join `IP:7777`. Client phải cùng bản Enhanced.

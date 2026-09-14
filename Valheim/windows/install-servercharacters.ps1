@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $RootDir = Split-Path -Parent $PSScriptRoot
 $PluginsDir = Join-Path $RootDir "config\bepinex\plugins"
-$Version = if ($env:SERVERCHARACTERS_VERSION) { $env:SERVERCHARACTERS_VERSION } else { "1.4.16" }
+$Version = if ($env:SERVERCHARACTERS_VERSION) { $env:SERVERCHARACTERS_VERSION } else { "1.4.17" }
 $DownloadUrl = "https://thunderstore.io/package/download/Smoothbrain/ServerCharacters/$Version/"
 
 New-Item -ItemType Directory -Force -Path $PluginsDir | Out-Null

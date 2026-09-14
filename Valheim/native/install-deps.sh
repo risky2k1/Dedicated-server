@@ -18,9 +18,12 @@ apt-get install -y \
   tar \
   ca-certificates \
   lib32gcc-s1 \
-  lib32stdc++6
+  lib32stdc++6 \
+  libatomic1 \
+  libpulse0 \
+  libpulse-mainloop-glib0
 
 # libsdl2 i386 optional — not always available on Ubuntu 24.04; Valheim runs without it
 apt-get install -y libsdl2-2.0-0:i386 2>/dev/null || true
 
-echo "System dependencies installed."
+echo "System dependencies installed (incl. PlayFab/crossplay: libatomic + pulse)."

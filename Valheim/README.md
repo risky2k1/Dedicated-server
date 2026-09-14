@@ -86,7 +86,7 @@ Trên **máy admin**: cài mod **Server devcommands** (JereKuusela) qua r2modman
 |---|---|
 | Địa chỉ | `IP_VPS:2456` (vd: `160.187.0.6:2456`) |
 | Mật khẩu | `SERVER_PASS` trong `.env` |
-| Client | Cài **ServerCharacters** cùng version server (1.4.16) |
+| Client | Cài **ServerCharacters** cùng version server (1.4.17) |
 
 Kiểm tra trên VPS:
 
@@ -334,9 +334,23 @@ docker compose down
 docker compose pull && docker compose up -d
 ```
 
-## Crossplay (tùy chọn)
+## Crossplay (PlayFab) — nên bật
 
-Bỏ comment `CROSSPLAY=true` trong `.env`, thêm tunnel UDP port **2458** trên playit. Mọi client cần tương thích crossplay.
+Valheim 1.0 **Join IP** (kể cả Steam/Gale) thường tìm lobby PlayFab với `crossplay=True`. Server `CROSSPLAY=false` → client `Got back zero lobbies`, không vào được.
+
+Trong `.env` giữ:
+
+```bash
+CROSSPLAY=true
+```
+
+`./native/install-deps.sh` cài `libatomic1` + `libpulse*` (cần cho `libparty.so`). Log khi OK: `Session "..." registered with join code XXXXXX`.
+
+Join: `IP:2456` hoặc mã 6 số; **xóa Favorites/IP cũ** trước. Steam-only (`CROSSPLAY=false`) chỉ dùng khi chắc client không đi đường PlayFab.
+
+## Seed world mới
+
+Dedicated server **không** có `-seed`. Tạo `.fwl` (metadata) với seed rồi đặt vào `config/worlds_local/`, set `WORLD_NAME` khớp tên file. Server sẽ tạo `.db` lúc load lần đầu.
 
 ## Cấu trúc thư mục
 

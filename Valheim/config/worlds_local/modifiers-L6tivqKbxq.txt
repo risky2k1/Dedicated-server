@@ -1,0 +1,4 @@
+## Modifiers for seed L6tivqKbxq (match SERVER_ARGS on dedicated)
+preset = normal
+deathpenalty = veryeasy
+resources = muchmore

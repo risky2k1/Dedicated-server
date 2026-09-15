@@ -15,14 +15,17 @@ description: >-
 | --- | --- |
 | Mod site | Hexium — https://valheim.hexium.gg |
 | Client manager | Gale — not r2modman |
-| Client install | Modpack `TuanPM-MyModPack` **1.0.1** (`TuanPM-MyModPack-1.0.1`) |
+| Client install | Modpack `TuanPM-MyModPack` **1.0.1** on **client + server** |
+| BepInEx | `5.4.2350` — `https://cdn.hexium.gg/upload/1/5.4.2350.zip` |
+| Modpack zip | `https://cdn.hexium.gg/upload/1184/1.0.1.zip` → `BepInEx/plugins/` |
+| Mod page | https://valheim.hexium.gg/mods/TuanPM/MyModPack |
 | Game | Valheim **1.0** |
 | Crossplay | **Required** on dedicated: `CROSSPLAY=true` |
 
 ## Do / Don't
 
 - **Do** tell players: install Gale → search/install **TuanPM-MyModPack** 1.0.1 → launch via Gale.
-- **Do** keep server plugins in sync via `native/install-*.sh` + Hexium API (BepInExPack, ServerCharacters, optional admin mods).
+- **Do** keep server plugins in sync via `native/install-mymodpack.sh` (+ `install-bepinex.sh`; optional `install-serverdevcommands.sh`).
 - **Don't** recommend r2modman or Thunderstore as the primary client path for this server.
 - **Don't** list/install the 6 QoL mods one-by-one — use the modpack.
 - **Don't** ship a Valheim 1.0 dedicated without `-crossplay` / `CROSSPLAY=true`.

@@ -42,7 +42,7 @@ else
   echo "BEPINEX=false — skipping BepInEx."
 fi
 
-"${ROOT_DIR}/native/install-servercharacters.sh"
+"${ROOT_DIR}/native/install-mymodpack.sh"
 "${ROOT_DIR}/native/install-systemd.sh"
 
 echo ""

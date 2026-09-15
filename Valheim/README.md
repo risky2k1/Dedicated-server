@@ -54,6 +54,7 @@ sudo systemctl stop valheim       # tắt (save world trước khi stop)
 journalctl -u valheim -f          # xem log
 ./native/backup-world.sh          # backup thủ công
 ./native/update-server.sh         # update game (server phải tắt)
+./native/install-mymodpack.sh           # TuanPM-MyModPack (client+server QoL)
 ./native/install-serverdevcommands.sh   # tùy chọn: spawn/god cho admin
 ```
 

@@ -14,10 +14,20 @@ alwaysApply: false
 
 ## Modpack thay vì cài lẻ
 
-- Client: cài **một** modpack `TuanPM-MyModPack` **1.0.1** (dependency string `TuanPM-MyModPack-1.0.1`) — gồm 6 QoL chính.
-- **Không** hướng dẫn / cài từng QoL mod riêng (khó đồng bộ version giữa mọi máy).
-- Trong docs/UI: ghi **tên package + version** để search trong Gale; không cần link Hexium từng mod.
-- Server-side bắt buộc (BepInExPack, ServerCharacters, …) vẫn cài qua script `native/` / `linux/` từ Hexium — khớp version với modpack/client.
+- Package: `TuanPM/MyModPack` **1.0.1** (`TuanPM-MyModPack-1.0.1`) — [mod page](https://valheim.hexium.gg/mods/TuanPM/MyModPack).
+- **Bắt buộc cài cả client và server** (Hexium: Client & Server).
+- Thứ tự cài (theo Hexium):
+  1. **BepInExPack Valheim** `5.4.2350` — `https://cdn.hexium.gg/upload/1/5.4.2350.zip`
+  2. **MyModPack** `1.0.1` — `https://cdn.hexium.gg/upload/1184/1.0.1.zip` → giải nén vào `BepInEx/plugins/`
+- Dependencies lock trong pack (không cài lẻ QoL):
+  - `Azumatt-AzuCraftyBoxes-1.8.20`
+  - `Azumatt-AzuExtendedPlayerInventory-2.5.0`
+  - `Azumatt-AzuAutoStore-3.1.4`
+  - `Azumatt-AAA_Crafting-2.1.9`
+  - `Smoothbrain-TargetPortal-1.2.6`
+  - `Smoothbrain-ServerCharacters-1.4.17`
+- Player-facing: Gale search **MyModPack** / **TuanPM-MyModPack** + version — đủ; CDN dùng cho server/script/manual.
+- Server native: chạy `./native/install-mymodpack.sh` (pack zip chỉ là manifest — script tải từng dep DLL).
 
 ## Valheim 1.0 + crossplay
 

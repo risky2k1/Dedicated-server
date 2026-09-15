@@ -329,7 +329,7 @@
           <div class="pass-row">
             <code
               id="server-pass"
-              data-pass="4sQHDqfdYIFB19Xx"
+              data-pass="zxcvbnm"
               data-hidden="true"
               aria-label="Mật khẩu server"
               >••••••••••••••••</code
@@ -370,7 +370,12 @@
           </div>
         </div>
         <div class="status-stack" aria-label="Trạng thái server">
-          <div class="status-row" id="process-status" role="status" aria-live="polite">
+          <div
+            class="status-row"
+            id="process-status"
+            role="status"
+            aria-live="polite"
+          >
             <span class="status-kind">Process</span>
             <span
               class="status-dot is-checking"
@@ -422,8 +427,8 @@
             >
           </li>
           <li>
-            Trong Gale (Hexium), search và cài <strong>một</strong> modpack (đúng
-            version) — không cài từng mod lẻ:
+            Trong Gale (Hexium), search và cài <strong>một</strong> modpack
+            (đúng version) — không cài từng mod lẻ:
             <ul>
               <li><strong>TuanPM-MyModPack</strong> 1.0.1</li>
             </ul>
@@ -436,7 +441,9 @@
         </p>
       </section>
 
-      <footer>Tuns Valheim · world <em>L6tivqKbxq</em> · private dedicated</footer>
+      <footer>
+        Tuns Valheim · world <em>L6tivqKbxq</em> · private dedicated
+      </footer>
     </main>
     <script>
       (function () {
@@ -451,7 +458,7 @@
             btn.setAttribute("aria-pressed", show ? "true" : "false");
             btn.setAttribute(
               "aria-label",
-              show ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+              show ? "Ẩn mật khẩu" : "Hiện mật khẩu",
             );
             pass.setAttribute("data-hidden", show ? "false" : "true");
             pass.textContent = show ? real : mask;
@@ -535,19 +542,19 @@
                 setProcessStatus(
                   "online",
                   "Process đang chạy",
-                  pid + " · " + time
+                  pid + " · " + time,
                 );
               } else if (data.active) {
                 setProcessStatus(
                   "offline",
                   "Service up, chưa listen port",
-                  pid + " · " + time
+                  pid + " · " + time,
                 );
               } else {
                 setProcessStatus(
                   "offline",
                   "Process đã dừng",
-                  (data.state || "inactive") + " · " + time
+                  (data.state || "inactive") + " · " + time,
                 );
               }
             })
@@ -555,7 +562,7 @@
               setProcessStatus(
                 "offline",
                 "Không đọc được process",
-                "thiếu /api/status"
+                "thiếu /api/status",
               );
             });
         }

@@ -65,7 +65,7 @@ Mod [Server devcommands](https://thunderstore.io/c/valheim/p/JereKuusela/Server_
 
 | Ai cần cài? | Server (VPS) | Client |
 | ----------- | ------------ | ------ |
-| **Admin**   | Có (script bên dưới) | Có — r2modman/Thunderstore, cùng version |
+| **Admin**   | Có (script bên dưới) | Có — Gale/Hexium, cùng version |
 | **Player thường** | Không | Không |
 
 Trên VPS (sau `git pull` hoặc copy script):
@@ -76,7 +76,7 @@ cd /opt/Dedicated-server/Valheim
 sudo systemctl restart valheim
 ```
 
-Trên **máy admin**: cài mod **Server devcommands** (JereKuusela) qua r2modman, profile Valheim, version **1.108.0** (hoặc khớp `SERVER_DEVCOMMANDS_VERSION` trong `.env`). Vào server → **F5** → `spawn Wood 1000` (không cần gõ `devcommands` trước).
+Trên **máy admin**: dùng **Gale** (Hexium), cài/modpack đủ profile server — thêm **Server devcommands** (JereKuusela) nếu cần, version khớp `SERVER_DEVCOMMANDS_VERSION` trong `.env`. Vào server → **F5** → `spawn Wood 1000` (không cần gõ `devcommands` trước).
 
 > Lệnh `ServerCharacters giveitem ...` thuộc mod ServerCharacters — không cần Server devcommands.
 
@@ -86,7 +86,7 @@ Trên **máy admin**: cài mod **Server devcommands** (JereKuusela) qua r2modman
 |---|---|
 | Địa chỉ | `IP_VPS:2456` (vd: `160.187.0.6:2456`) |
 | Mật khẩu | `SERVER_PASS` trong `.env` |
-| Client | Cài **ServerCharacters** cùng version server (1.4.16) |
+| Client | Gale + modpack **TuanPM-MyModPack 1.0.1** (khớp stack server / Hexium) |
 
 Kiểm tra trên VPS:
 
@@ -255,7 +255,8 @@ Không cần mở port trên router. Người chơi join bằng địa chỉ pla
 
 ## Cấu hình ServerCharacters
 
-Mod **bắt buộc cài trên cả server lẫn mọi client** (cùng version). Cài qua Thunderstore hoặc r2modman.
+**Client:** cài modpack **TuanPM-MyModPack 1.0.1** qua **Gale** (Hexium) — không dùng r2modman, không cài từng QoL mod lẻ.  
+**Server:** BepInEx + ServerCharacters (và mod server khác) qua script `native/` / Hexium, cùng version với client/modpack.
 
 Sau lần chạy server đầu tiên, mở file config tại:
 
@@ -334,9 +335,9 @@ docker compose down
 docker compose pull && docker compose up -d
 ```
 
-## Crossplay (tùy chọn)
+## Crossplay (bắt buộc với Valheim 1.0)
 
-Bỏ comment `CROSSPLAY=true` trong `.env`, thêm tunnel UDP port **2458** trên playit. Mọi client cần tương thích crossplay.
+Dedicated dựng từ **Valheim 1.0** cần `CROSSPLAY=true` trong `.env` (flag `-crossplay`). Docker/playit: thêm tunnel UDP port **2458**. Mọi client cần tương thích crossplay.
 
 ## Cấu trúc thư mục
 
@@ -384,7 +385,7 @@ systemctl start valheim
 → `journalctl -u valheim -n 50` — kiểm tra `SERVER_PASS` ≥ 5 ký tự.
 
 **Client không vào được**  
-→ Mở firewall UDP 2456–2457. Join bằng `IP_VPS:2456`. Client phải cài ServerCharacters cùng version.
+→ Mở firewall UDP 2456–2457. Join bằng `IP_VPS:2456`. Client: Gale + **TuanPM-MyModPack 1.0.1**; server Valheim 1.0 cần `CROSSPLAY=true`.
 
 **Thiếu lib32 khi cài SteamCMD**  
 → `sudo ./native/install-deps.sh` rồi chạy lại `./native/setup.sh`.
@@ -398,7 +399,7 @@ systemctl start valheim
 → `docker compose logs -f valheim` — đợi dòng báo server started.
 
 **Client không vào được**  
-→ Kiểm tra tunnel playit trỏ đúng `127.0.0.1:2456` và `127.0.0.1:2457`. Client phải cài ServerCharacters cùng version.
+→ Kiểm tra tunnel playit trỏ đúng `127.0.0.1:2456` và `127.0.0.1:2457` (và **2458** nếu crossplay). Client: Gale + **TuanPM-MyModPack 1.0.1**.
 
 **Playit không kết nối (Windows)**  
 → `network_mode: host` trên Docker Desktop có thể hạn chế. Thử chạy trên Linux/WSL2, hoặc kiểm tra log: `docker compose logs -f playit`.

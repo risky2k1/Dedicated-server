@@ -1,0 +1,31 @@
+---
+description: Valheim mod platform, client manager, modpack, and crossplay conventions
+globs: Valheim/**
+alwaysApply: false
+---
+
+# Valheim mods & client
+
+## Platform & tools (bắt buộc)
+
+- **Trang mod:** [Hexium](https://valheim.hexium.gg) — không dùng Thunderstore làm nguồn chính cho stack server này.
+- **Mod manager client:** [Gale](https://hexium.gg/mod-manager) — **không** dùng r2modman.
+- Download phía server/script: API Hexium `https://valheim.hexium.gg/api/experimental/package/{owner}/{name}/` (helper `hexium_resolve_download_url` trong `native/lib/common.sh`).
+
+## Modpack thay vì cài lẻ
+
+- Client: cài **một** modpack `TuanPM-MyModPack` **1.0.1** (dependency string `TuanPM-MyModPack-1.0.1`) — gồm 6 QoL chính.
+- **Không** hướng dẫn / cài từng QoL mod riêng (khó đồng bộ version giữa mọi máy).
+- Trong docs/UI: ghi **tên package + version** để search trong Gale; không cần link Hexium từng mod.
+- Server-side bắt buộc (BepInExPack, ServerCharacters, …) vẫn cài qua script `native/` / `linux/` từ Hexium — khớp version với modpack/client.
+
+## Valheim 1.0 + crossplay
+
+- Dedicated server tạo/chạy trên **Valheim 1.0** phải bật **crossplay**: `CROSSPLAY=true` trong `.env` (flag `-crossplay`).
+- Docker/playit: thêm tunnel UDP **2458** khi bật crossplay.
+- Client join crossplay-compatible (Steam + Xbox/MS Store nếu mở).
+
+## Khi sửa docs / index / script
+
+- Thay mọi mention r2modman → Gale; Thunderstore (nguồn mod) → Hexium.
+- Player-facing: ưu tiên “cài modpack” hơn list từng DLL/mod QoL.

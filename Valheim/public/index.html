@@ -329,7 +329,7 @@
           <div class="pass-row">
             <code
               id="server-pass"
-              data-pass="4sQHDqfdYIFB19Xx"
+              data-pass="zxcvbnm"
               data-hidden="true"
               aria-label="Mật khẩu server"
               >••••••••••••••••</code
@@ -370,7 +370,12 @@
           </div>
         </div>
         <div class="status-stack" aria-label="Trạng thái server">
-          <div class="status-row" id="process-status" role="status" aria-live="polite">
+          <div
+            class="status-row"
+            id="process-status"
+            role="status"
+            aria-live="polite"
+          >
             <span class="status-kind">Process</span>
             <span
               class="status-dot is-checking"
@@ -379,16 +384,6 @@
             ></span>
             <span id="process-label">Đang kiểm tra process…</span>
             <span class="status-meta" id="process-meta"></span>
-          </div>
-          <div class="status-row" id="server-status" role="status" aria-live="polite">
-            <span class="status-kind">Steam</span>
-            <span
-              class="status-dot is-checking"
-              id="status-dot"
-              aria-hidden="true"
-            ></span>
-            <span id="status-label">Đang kiểm tra Steam…</span>
-            <span class="status-meta" id="status-meta"></span>
           </div>
           <div class="status-actions">
             <button type="button" class="status-refresh" id="status-refresh">
@@ -432,22 +427,24 @@
             >
           </li>
           <li>
-            Trong Gale, search và cài các mod sau (đúng version):
+            Trong Gale (Hexium), search và cài <strong>một</strong> modpack
+            (đúng version) — không cài từng mod lẻ:
             <ul>
-              <li><strong>BepInExPack Valheim</strong> 5.4.2350</li>
-              <li><strong>ServerCharacters</strong> 1.4.17</li>
-              <li><strong>AzuCraftyBoxes</strong> 1.8.20</li>
+              <li><strong>TuanPM-MyModPack</strong> 1.0.1</li>
             </ul>
           </li>
         </ul>
         <p class="note">
-          Server dùng <strong>crossplay/PlayFab</strong> (Valheim 1.0 Join IP cần).
-          Xóa Favorites/IP cũ, rồi Gale → <strong>Join Game → Join IP</strong>
-          với địa chỉ và mật khẩu ở trên (hoặc mã 6 số trong log server).
+          Server dùng <strong>crossplay/PlayFab</strong> (Valheim 1.0 Join IP
+          cần). Xóa Favorites/IP cũ, rồi mở game bằng <strong>Gale</strong> →
+          <strong>Join Game → Join IP</strong> với địa chỉ và mật khẩu ở trên
+          (hoặc mã 6 số trong log server).
         </p>
       </section>
 
-      <footer>Tuns Valheim · world <em>L6tivqKbxq</em> · private dedicated</footer>
+      <footer>
+        Tuns Valheim · world <em>L6tivqKbxq</em> · private dedicated
+      </footer>
     </main>
     <script>
       (function () {
@@ -462,7 +459,7 @@
             btn.setAttribute("aria-pressed", show ? "true" : "false");
             btn.setAttribute(
               "aria-label",
-              show ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+              show ? "Ẩn mật khẩu" : "Hiện mật khẩu",
             );
             pass.setAttribute("data-hidden", show ? "false" : "true");
             pass.textContent = show ? real : mask;
@@ -508,19 +505,13 @@
           }
         }
 
-        var SERVER_HOST = "180.93.113.164";
-        var GAME_PORT = 2456;
-        var VALHEIM_APPID = 892970;
         var REFRESH_MS = 60000;
         var STATUS_API = "/api/status";
         var processDot = document.getElementById("process-dot");
         var processLabel = document.getElementById("process-label");
         var processMeta = document.getElementById("process-meta");
-        var dot = document.getElementById("status-dot");
-        var label = document.getElementById("status-label");
-        var meta = document.getElementById("status-meta");
         var refreshBtn = document.getElementById("status-refresh");
-        if (!dot || !label) return;
+        if (!processDot || !processLabel) return;
 
         function setRow(dotEl, labelEl, metaEl, state, text, detail) {
           if (dotEl) dotEl.className = "status-dot is-" + state;
@@ -528,30 +519,8 @@
           if (metaEl) metaEl.textContent = detail || "";
         }
 
-        function setSteamStatus(state, text, detail) {
-          setRow(dot, label, meta, state, text, detail);
-        }
-
         function setProcessStatus(state, text, detail) {
           setRow(processDot, processLabel, processMeta, state, text, detail);
-        }
-
-        function isValheimServer(s) {
-          if (!s) return false;
-          if (Number(s.appid) === VALHEIM_APPID) return true;
-          if (Number(s.gameport) === GAME_PORT) return true;
-          var addr = String(s.addr || "");
-          return (
-            addr.indexOf(":" + GAME_PORT) !== -1 ||
-            addr.indexOf(":" + (GAME_PORT + 1)) !== -1
-          );
-        }
-
-        function parseSteamPayload(raw) {
-          var data = typeof raw === "string" ? JSON.parse(raw) : raw;
-          var servers =
-            (data && data.response && data.response.servers) || [];
-          return servers.some(isValheimServer);
         }
 
         function nowTime() {
@@ -560,31 +529,7 @@
           );
         }
 
-        function fetchSteamJson() {
-          var steamUrl =
-            "https://api.steampowered.com/ISteamApps/GetServersAtAddress/v1/?addr=" +
-            encodeURIComponent(SERVER_HOST) +
-            "&format=json";
-          return fetch(steamUrl, { cache: "no-store" })
-            .then(function (res) {
-              if (!res.ok) throw new Error("steam http " + res.status);
-              return res.json();
-            })
-            .catch(function () {
-              var proxied =
-                "https://api.allorigins.win/raw?url=" +
-                encodeURIComponent(steamUrl);
-              return fetch(proxied, { cache: "no-store" }).then(function (
-                res
-              ) {
-                if (!res.ok) throw new Error("proxy http " + res.status);
-                return res.json();
-              });
-            });
-        }
-
         function checkProcessStatus() {
-          if (!processDot || !processLabel) return Promise.resolve();
           setProcessStatus("checking", "Đang kiểm tra process…", "");
           return fetch(STATUS_API, { cache: "no-store" })
             .then(function (res) {
@@ -598,19 +543,19 @@
                 setProcessStatus(
                   "online",
                   "Process đang chạy",
-                  pid + " · " + time
+                  pid + " · " + time,
                 );
               } else if (data.active) {
                 setProcessStatus(
                   "offline",
                   "Service up, chưa listen port",
-                  pid + " · " + time
+                  pid + " · " + time,
                 );
               } else {
                 setProcessStatus(
                   "offline",
                   "Process đã dừng",
-                  (data.state || "inactive") + " · " + time
+                  (data.state || "inactive") + " · " + time,
                 );
               }
             })
@@ -618,34 +563,13 @@
               setProcessStatus(
                 "offline",
                 "Không đọc được process",
-                "thiếu /api/status"
+                "thiếu /api/status",
               );
             });
         }
 
-        function checkSteamStatus() {
-          setSteamStatus("checking", "Đang kiểm tra Steam…", "");
-          return fetchSteamJson()
-            .then(function (data) {
-              var online = parseSteamPayload(data);
-              var time = nowTime();
-              if (online) {
-                setSteamStatus("online", "List trên Steam", "cập nhật " + time);
-              } else {
-                setSteamStatus(
-                  "offline",
-                  "Chưa list Steam / offline",
-                  "cập nhật " + time
-                );
-              }
-            })
-            .catch(function () {
-              setSteamStatus("offline", "Không kiểm tra được Steam", "thử lại sau");
-            });
-        }
-
         function checkStatus() {
-          return Promise.all([checkProcessStatus(), checkSteamStatus()]);
+          return checkProcessStatus();
         }
 
         if (refreshBtn) {

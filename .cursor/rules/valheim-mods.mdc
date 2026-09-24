@@ -1,0 +1,41 @@
+---
+description: Valheim mod platform, client manager, modpack, and crossplay conventions
+globs: Valheim/**
+alwaysApply: false
+---
+
+# Valheim mods & client
+
+## Platform & tools (bắt buộc)
+
+- **Trang mod:** [Hexium](https://valheim.hexium.gg) — không dùng Thunderstore làm nguồn chính cho stack server này.
+- **Mod manager client:** [Gale](https://hexium.gg/mod-manager) — **không** dùng r2modman.
+- Download phía server/script: API Hexium `https://valheim.hexium.gg/api/experimental/package/{owner}/{name}/` (helper `hexium_resolve_download_url` trong `native/lib/common.sh`).
+
+## Modpack thay vì cài lẻ
+
+- Package: `TuanPM/MyModPack` **1.0.1** (`TuanPM-MyModPack-1.0.1`) — [mod page](https://valheim.hexium.gg/mods/TuanPM/MyModPack).
+- **Bắt buộc cài cả client và server** (Hexium: Client & Server).
+- Thứ tự cài (theo Hexium):
+  1. **BepInExPack Valheim** `5.4.2350` — `https://cdn.hexium.gg/upload/1/5.4.2350.zip`
+  2. **MyModPack** `1.0.1` — `https://cdn.hexium.gg/upload/1184/1.0.1.zip` → giải nén vào `BepInEx/plugins/`
+- Dependencies lock trong pack (không cài lẻ QoL):
+  - `Azumatt-AzuCraftyBoxes-1.8.20`
+  - `Azumatt-AzuExtendedPlayerInventory-2.5.0`
+  - `Azumatt-AzuAutoStore-3.1.4`
+  - `Azumatt-AAA_Crafting-2.1.9`
+  - `Smoothbrain-TargetPortal-1.2.6`
+  - `Smoothbrain-ServerCharacters-1.4.17`
+- Player-facing: Gale search **MyModPack** / **TuanPM-MyModPack** + version — đủ; CDN dùng cho server/script/manual.
+- Server native: chạy `./native/install-mymodpack.sh` (pack zip chỉ là manifest — script tải từng dep DLL).
+
+## Valheim 1.0 + crossplay
+
+- Dedicated server tạo/chạy trên **Valheim 1.0** phải bật **crossplay**: `CROSSPLAY=true` trong `.env` (flag `-crossplay`).
+- Docker/playit: thêm tunnel UDP **2458** khi bật crossplay.
+- Client join crossplay-compatible (Steam + Xbox/MS Store nếu mở).
+
+## Khi sửa docs / index / script
+
+- Thay mọi mention r2modman → Gale; Thunderstore (nguồn mod) → Hexium.
+- Player-facing: ưu tiên “cài modpack” hơn list từng DLL/mod QoL.

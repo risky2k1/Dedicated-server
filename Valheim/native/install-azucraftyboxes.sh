@@ -8,7 +8,7 @@ PLUGINS_DIR="${ROOT_DIR}/config/bepinex/plugins"
 source "${ROOT_DIR}/native/lib/common.sh"
 load_env
 
-VERSION="${AZUCRAFTYBOXES_VERSION:-1.8.20}"
+VERSION="${AZUCRAFTYBOXES_VERSION:-1.8.23}"
 DOWNLOAD_URL="$(hexium_resolve_download_url Azumatt AzuCraftyBoxes "${VERSION}")"
 
 "${ROOT_DIR}/linux/ensure-permissions.sh"

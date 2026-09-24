@@ -8,7 +8,7 @@ PLUGINS_DIR="${ROOT_DIR}/config/bepinex/plugins"
 source "${ROOT_DIR}/native/lib/common.sh"
 load_env
 
-VERSION="${SERVER_DEVCOMMANDS_VERSION:-1.111.0}"
+VERSION="${SERVER_DEVCOMMANDS_VERSION:-1.113.0}"
 DOWNLOAD_URL="$(hexium_resolve_download_url JereKuusela Server_devcommands "${VERSION}")"
 
 "${ROOT_DIR}/linux/ensure-permissions.sh"

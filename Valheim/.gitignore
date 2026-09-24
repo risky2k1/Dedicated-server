@@ -15,6 +15,10 @@ config/bepinex/*
 !config/bepinex/plugins/
 !config/bepinex/plugins/.gitkeep
 config/bepinex/plugins/*.dll
+!config/bepinex/plugins_disabled/
+!config/bepinex/plugins_disabled/.gitkeep
+config/bepinex/plugins_disabled/*.dll
+config/bepinex/plugins_disabled/*.cfg.*
 config/backups/
 config/characters_local/backups/
 data/

@@ -354,6 +354,8 @@ Join: `IP:2456` hoặc mã 6 số; **xóa Favorites/IP cũ** trước. Steam-onl
 
 Dedicated server **không** có `-seed`. Tạo `.fwl` (metadata) với seed rồi đặt vào `config/worlds_local/`, set `WORLD_NAME` khớp tên file. Server sẽ tạo `.db` lúc load lần đầu.
 
+**Live (VPS):** world `GAYLANDS`, Valheim `l-1.0.15`, join code trên `public/index.html`. Khi crossplay bật, **ServerCharacters** tạm tắt — DLL chuyển sang `config/bepinex/plugins_disabled/` (PlayFab không tương thích). Các mod Azu*/TargetPortal/ServerDevcommands vẫn chạy. Bật lại ServerCharacters khi tắt crossplay.
+
 ## Cấu trúc thư mục
 
 ```

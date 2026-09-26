@@ -132,17 +132,17 @@ groups:
 ## This is to give you examples on how it's done, but still allow everything to be stored into the container.
 
 Player_tombstone: # This is to exclude the tombstone from randomly picking up items that fall near it.
-  range: 10
+  range: 20
   exclude:
     - All
 
 Player: # This is to exclude backpacks from randomly storing items into them.
-  range: 10
+  range: 20
   exclude:
     - All
 
 piece_chest:
-  range: 10 # This is the range that the container will store items. This overrides the global range set in the config.
+  range: 20 # This is the range that the container will store items. This overrides the global range set in the config.
   exclude: # Exclude these items from being able to be stored into the container
     #- Food # Exclude all in group
     - PickaxeBronze # Allow prefab names as well, in this case we will use something that isn't a food
@@ -154,7 +154,7 @@ piece_chest:
 # They were also easy ways for me to show you how to use the groups without actually excluding something you might want to always pull by default.
 
 piece_chest_wood:
-  range: 10
+  range: 20
   exclude:
     - Swords # Exclude all in group
     - Tier 2 Items # Exclude all in group
@@ -168,12 +168,12 @@ piece_chest_wood:
     - ArmorBronzeLegs
 
 piece_chest_private:
-  range: 10
+  range: 20
   exclude:
     - All # Exclude everything
 
 piece_chest_blackmetal:
-  range: 10
+  range: 20
   exclude:
     - Swords # Exclude all in group
     - Tier 2 Items # Exclude all in group
@@ -184,39 +184,39 @@ piece_chest_blackmetal:
     - Bronze
 
 rk_cabinet: # rk_ is typically the prefix for containers coming from RockerKitten's mods
-  range: 10
+  range: 20
   exclude:
     - Food
   includeOverride:
     - Food
 
 rk_cabinet2:
-  range: 10
+  range: 20
   exclude:
     - Food
   includeOverride:
     - Food
 
 rk_barrel:
-  range: 10
+  range: 20
   exclude:
     - Armor
     - Swords
 
 rk_barrel2:
-  range: 10
+  range: 20
   exclude:
     - Armor
     - Swords
 
 rk_crate:
-  range: 10
+  range: 20
   exclude:
     - Armor
     - Swords
 
 rk_crate2:
-  range: 10
+  range: 20
   exclude:
     - Armor
     - Swords

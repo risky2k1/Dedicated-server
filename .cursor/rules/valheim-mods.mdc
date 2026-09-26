@@ -6,6 +6,8 @@ alwaysApply: false
 
 # Valheim mods & client
 
+Live server deploys (SSH, git pull, systemd, Steam update): `.cursor/skills/vps-ops/SKILL.md` and rule `vps-ops`.
+
 ## Platform & tools (bắt buộc)
 
 - **Trang mod:** [Hexium](https://valheim.hexium.gg) — không dùng Thunderstore làm nguồn chính cho stack server này.

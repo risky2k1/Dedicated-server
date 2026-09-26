@@ -4,7 +4,8 @@ description: >-
   Valheim dedicated server mod workflow: Hexium platform, Gale client manager,
   TuanPM-MyModPack instead of per-mod installs, and CROSSPLAY for Valheim 1.0.
   Use when installing/updating Valheim mods, writing player docs, setup scripts,
-  or advising how clients join the server.
+  advising how clients join the server, or changing the live VPS. For SSH,
+  git pull, and restarts, follow the vps-ops skill.
 ---
 
 # Valheim mods (Hexium + Gale + modpack)

@@ -1,0 +1,14 @@
+---
+description: Live VPS deploy — git pull only, no scp, do not overwrite world saves
+alwaysApply: true
+---
+
+# Live VPS
+
+When changing the running Valheim server, follow `.cursor/skills/vps-ops/SKILL.md`.
+
+- Credentials are only in gitignored `vps.md`. Never commit or paste them.
+- SSH is publickey only. The VPS cannot `git fetch` over `git@github.com`. Its origin is HTTPS.
+- Ship tracked files by commit + push, then on `/opt/Dedicated-server` run `git fetch` and `git checkout origin/main -- <those paths>`. Do not scp tracked files.
+- Do not `git checkout -- .`, `git reset --hard`, or `git clean` on the VPS. Git history has old worlds and characters; the live world is `GAYLANDS`.
+- Git does not update the Steam dedicated build or plugin DLLs. Stop `valheim`, backup, run `update-server.sh` and the install script, then start. Match `public/index.html` to the version in the journal, not to the version you hoped to install.

@@ -34,7 +34,7 @@ Live server deploys (SSH, git pull, systemd, Steam update): `.cursor/skills/vps-
 ## Valheim 1.0 + crossplay
 
 - Dedicated server tạo/chạy trên **Valheim 1.0** phải bật **crossplay**: `CROSSPLAY=true` trong `.env` (flag `-crossplay`).
-- Docker/playit: thêm tunnel UDP **2458** khi bật crossplay.
+- Crossplay cần thêm UDP **2458** (cùng 2456–2457).
 - Client join crossplay-compatible (Steam + Xbox/MS Store nếu mở).
 
 ## Khi sửa docs / index / script

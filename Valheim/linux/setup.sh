@@ -6,7 +6,7 @@ cd "${ROOT_DIR}"
 
 if [[ ! -f .env ]]; then
   cp .env.example .env
-  echo "Created .env — edit PLAYIT_SECRET_KEY and SERVER_PASS before playing."
+  echo "Created .env — edit SERVER_PASS before playing."
 fi
 
 "${ROOT_DIR}/linux/sync-env-user.sh"

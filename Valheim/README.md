@@ -204,7 +204,7 @@ Xem mục [Copy data từ máy local lên VPS](#copy-data-từ-máy-local-lên-v
 ```bash
 cd Valheim
 cp .env.example .env
-# Sửa .env: PLAYIT_SECRET_KEY, SERVER_PASS (tối thiểu 5 ký tự)
+# Sửa .env: SERVER_PASS (tối thiểu 5 ký tự)
 ./linux/setup.sh
 ```
 
@@ -230,29 +230,6 @@ Script sẽ tự:
 3. Chạy `docker compose up -d`
 
 Lần đầu khởi động sẽ tải game server (~1 GB), đợi **3–10 phút**.
-
-## Cấu hình Playit (một lần)
-
-Theo [wizard Docker Compose](https://playit.gg/account/agents) của playit.gg:
-
-1. Đăng ký / đăng nhập tại [playit.gg](https://playit.gg)
-2. **Agents** → **Add Agent** → chọn **Docker Compose** → copy **Secret Key**
-3. Dán key vào `.env`:
-   ```
-   PLAYIT_SECRET_KEY=your_key_here
-   ```
-4. Trên dashboard, tạo tunnel **Valheim**:
-   - **Local Address:** `127.0.0.1`
-   - **Port:** `2456` và `2457` (UDP)
-
-`docker-compose.yml` đã cấu hình sẵn:
-
-- **playit:** `ghcr.io/playit-cloud/playit-agent:0.17` + `network_mode: host` (theo wizard)
-- **valheim:** publish port `2456-2457/udp` ra localhost để playit forward vào
-
-Không cần mở port trên router. Người chơi join bằng địa chỉ playit cung cấp (IP/domain + port).
-
-> **Lưu ý:** Không commit secret key vào git. Nếu key bị lộ, tạo lại agent trên playit.gg.
 
 ## Cấu hình ServerCharacters
 
@@ -282,11 +259,10 @@ docker compose restart valheim
 
 | Biến                | Mô tả                                              |
 | ------------------- | -------------------------------------------------- |
-| `PLAYIT_SECRET_KEY` | Secret key từ playit.gg                            |
 | `SERVER_NAME`       | Tên hiển thị trong server browser                  |
 | `WORLD_NAME`        | Tên world (không có khoảng trắng)                  |
 | `SERVER_PASS`       | Mật khẩu join (≥ 5 ký tự, không trùng tên server)  |
-| `SERVER_PUBLIC`     | `false` = private, join qua playit                 |
+| `SERVER_PUBLIC`     | `true` = hiện trên server browser; `false` = private |
 | `BEPINEX`           | `true` = bật mod support                           |
 | `ADMINLIST_IDS`     | SteamID64 admin (để trống nếu không cần admin)     |
 | `PUID` / `PGID`     | UID/GID chạy container (Linux: `setup.sh` tự điền) |
@@ -346,7 +322,7 @@ Trong `.env` giữ:
 CROSSPLAY=true
 ```
 
-`./native/install-deps.sh` cài `libatomic1` + `libpulse*` (cần cho `libparty.so`). Docker/playit: thêm tunnel UDP **2458**. Log khi OK: `Session "..." registered with join code XXXXXX`.
+`./native/install-deps.sh` cài `libatomic1` + `libpulse*` (cần cho `libparty.so`). Crossplay thêm UDP **2458**. Log khi OK: `Session "..." registered with join code XXXXXX`.
 
 Join: `IP:2456` hoặc mã 6 số; **xóa Favorites/IP cũ** trước. Steam-only (`CROSSPLAY=false`) chỉ dùng khi chắc client không đi đường PlayFab.
 
@@ -354,7 +330,7 @@ Join: `IP:2456` hoặc mã 6 số; **xóa Favorites/IP cũ** trước. Steam-onl
 
 Dedicated server **không** có `-seed`. Tạo `.fwl` (metadata) với seed rồi đặt vào `config/worlds_local/`, set `WORLD_NAME` khớp tên file. Server sẽ tạo `.db` lúc load lần đầu.
 
-**Live (VPS):** world `GAYLANDS`, Valheim `l-1.0.16`, join code trên `public/index.html`. Khi crossplay bật, **ServerCharacters** tạm tắt — DLL chuyển sang `config/bepinex/plugins_disabled/` (PlayFab không tương thích). Các mod Azu*/TargetPortal/ServerDevcommands vẫn chạy. Bật lại ServerCharacters khi tắt crossplay.
+**Live (VPS):** world `GAYLANDS`, Valheim `l-1.0.16`, join code trên `public/index.html`. Crossplay và **ServerCharacters** cùng chạy. Nhân vật nằm trong `config/characters_local/`, mỗi Steam ID một nhân vật.
 
 ## Cấu trúc thư mục
 
@@ -416,10 +392,7 @@ systemctl start valheim
 → `docker compose logs -f valheim` — đợi dòng báo server started.
 
 **Client không vào được**  
-→ Kiểm tra tunnel playit trỏ đúng `127.0.0.1:2456` và `127.0.0.1:2457` (và **2458** nếu crossplay). Client: Gale + **TuanPM-MyModPack 1.0.1**.
-
-**Playit không kết nối (Windows)**  
-→ `network_mode: host` trên Docker Desktop có thể hạn chế. Thử chạy trên Linux/WSL2, hoặc kiểm tra log: `docker compose logs -f playit`.
+→ Mở UDP 2456–2457 (và **2458** nếu crossplay). Client: Gale + **TuanPM-MyModPack 1.0.1**.
 
 **Mật khẩu bị từ chối**  
 → `SERVER_PASS` phải ≥ 5 ký tự và không được là substring của `SERVER_NAME`.

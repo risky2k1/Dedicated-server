@@ -29,7 +29,7 @@ Secrets stay in gitignored `vps.md` at the repo root. Read it when connecting. D
 | Game tree | `/opt/Dedicated-server/Valheim` |
 | Process | systemd unit `valheim` (native SteamCMD, not docker compose) |
 | Stop | `systemctl stop valheim` sends SIGINT and saves the world (`TimeoutStopSec=120`) |
-| Live world | `GAYLANDS`, crossplay on, ServerCharacters off |
+| Live world | `GAYLANDS`, crossplay on, ServerCharacters on (`Single Character Mode`) |
 
 `.env`, `Valheim/server/` (Steam install), and `config/bepinex/plugins/*.dll` are gitignored. They live only on the VPS.
 

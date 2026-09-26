@@ -8,7 +8,7 @@ $EnvExample = Join-Path $RootDir ".env.example"
 
 if (-not (Test-Path $EnvFile)) {
     Copy-Item $EnvExample $EnvFile
-    Write-Host "Created .env — edit PLAYIT_SECRET_KEY and SERVER_PASS before playing."
+    Write-Host "Created .env — edit SERVER_PASS before playing."
 }
 
 $PluginsDir = Join-Path $RootDir "config\bepinex\plugins"

@@ -30,7 +30,26 @@ install_zip_dlls() {
   echo "Downloading ${label}..."
   curl -fsSL -A 'Valheim-native-setup' -L -o "${archive}" "${url}"
   mkdir -p "${extracted}"
-  unzip -qo "${archive}" -d "${extracted}"
+  # Thunderstore zips often store names with Windows backslashes.
+  python3 - "${archive}" "${extracted}" <<'PY'
+import sys
+import zipfile
+from pathlib import Path
+
+archive, dest = sys.argv[1], Path(sys.argv[2]).resolve()
+dest.mkdir(parents=True, exist_ok=True)
+with zipfile.ZipFile(archive) as zf:
+    for info in zf.infolist():
+        name = info.filename.replace("\\", "/").lstrip("/")
+        if not name or name.endswith("/"):
+            continue
+        target = (dest / name).resolve()
+        if dest != target and dest not in target.parents:
+            raise SystemExit(f"unsafe path in {archive}: {info.filename}")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with zf.open(info) as src, target.open("wb") as out:
+            out.write(src.read())
+PY
 
   local dll base count=0
   while IFS= read -r dll; do

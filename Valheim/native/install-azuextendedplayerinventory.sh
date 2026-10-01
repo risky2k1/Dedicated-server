@@ -8,8 +8,8 @@ PLUGINS_DIR="${ROOT_DIR}/config/bepinex/plugins"
 source "${ROOT_DIR}/native/lib/common.sh"
 load_env
 
-VERSION="${AZUCRAFTYBOXES_VERSION:-1.8.26}"
-DOWNLOAD_URL="$(hexium_resolve_download_url Azumatt AzuCraftyBoxes "${VERSION}")"
+VERSION="${AZUEXTENDEDPLAYERINVENTORY_VERSION:-2.6.1}"
+DOWNLOAD_URL="$(hexium_resolve_download_url Azumatt AzuExtendedPlayerInventory "${VERSION}")"
 
 "${ROOT_DIR}/linux/ensure-permissions.sh"
 mkdir -p "${PLUGINS_DIR}"
@@ -17,14 +17,14 @@ mkdir -p "${PLUGINS_DIR}"
 tmp_dir="$(mktemp -d)"
 trap 'rm -rf "${tmp_dir}"' EXIT
 
-echo "Downloading AzuCraftyBoxes ${VERSION} from Hexium..."
-curl -fsSL -A 'Valheim-native-setup' -o "${tmp_dir}/AzuCraftyBoxes.zip" "${DOWNLOAD_URL}"
-unzip -qo "${tmp_dir}/AzuCraftyBoxes.zip" -d "${tmp_dir}/extracted"
+echo "Downloading AzuExtendedPlayerInventory ${VERSION} from Hexium..."
+curl -fsSL -A 'Valheim-native-setup' -o "${tmp_dir}/AzuExtendedPlayerInventory.zip" "${DOWNLOAD_URL}"
+unzip -qo "${tmp_dir}/AzuExtendedPlayerInventory.zip" -d "${tmp_dir}/extracted"
 
 shopt -s nullglob
 dlls=("${tmp_dir}/extracted"/*.dll)
 if ((${#dlls[@]} == 0)); then
-  echo "No DLL found in AzuCraftyBoxes package." >&2
+  echo "No DLL found in AzuExtendedPlayerInventory package." >&2
   exit 1
 fi
 
@@ -36,4 +36,4 @@ done
 
 echo ""
 echo "Restart server:  sudo systemctl restart valheim"
-echo "All clients must install AzuCraftyBoxes ${VERSION} (Azumatt) via Gale/Hexium."
+echo "All clients must install AzuExtendedPlayerInventory ${VERSION} (Azumatt) via Gale/Hexium."

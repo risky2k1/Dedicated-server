@@ -61,10 +61,25 @@ A fetch does not change the Valheim build or plugin DLLs.
 2. `./native/backup-world.sh`
 3. Game: `./native/update-server.sh` (Steam app `896660`). It refuses to run while `valheim` is active.
 4. Mods: the matching `./native/install-*.sh` (BepInEx, modpack, or a single mod such as AzuCraftyBoxes).
-5. `systemctl start valheim`. Confirm the version in `journalctl -u valheim` before editing `Valheim/public/index.html`.
+5. `systemctl start valheim`. Confirm the version in `journalctl -u valheim`, then set the visible server stamp (below) and restart once so the in-game name matches.
 
 `update-server.sh` stops if the unit or `valheim_server.x86_64` is still running. If SteamCMD fails, start the old unit again so the world is not left offline.
 
 AzuCraftyBoxes on this server is **not** the older copy locked inside TuanPM-MyModPack. The version that runs is the default in `Valheim/native/install-azucraftyboxes.sh`. Clients on Gale must install that same version.
 
+Jotunn is **not** on Hexium. `Valheim/native/install-betterwisps.sh` downloads Jotunn and Better Wisps from Thunderstore.
+
 BepInEx version comes from `BEPINEX_PACK_VERSION` or the default in `Valheim/native/install-bepinex.sh`.
+
+## Visible server stamp
+
+After every game, mod, world-restore, or `SERVER_ARGS` change, set the same stamp in both places:
+
+- `.env` `SERVER_NAME` (this is the name shown in the Valheim join list)
+- `Valheim/public/index.html` `<title>` and the hero `<h1>`
+
+Format: `Tuns l-<game version> <WORLD><save> <modifiers>`
+
+Example: `Tuns l-1.0.16 epi2.6.1 cb1.8.26 jot2.30.2 wisp1.0.44`
+
+`<modifiers>` is the live `SERVER_ARGS` in short form (`res-most`, `death-ve`). Do not put `SERVER_PASS` in the name; the password must not be a substring of `SERVER_NAME`. Restart `valheim` after changing `SERVER_NAME`. The log line `Session "..."` must show the new stamp before telling players to rejoin.

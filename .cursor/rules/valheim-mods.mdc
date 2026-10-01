@@ -11,6 +11,7 @@ Live server deploys (SSH, git pull, systemd, Steam update): `.cursor/skills/vps-
 ## Platform & tools (bắt buộc)
 
 - **Trang mod:** [Hexium](https://valheim.hexium.gg) — không dùng Thunderstore làm nguồn chính cho stack server này.
+- **Ngoại lệ:** Hexium không có **Jotunn** (`ValheimModding/Jotunn`) và **Better Wisps** (`Digitalroot/Better_Wisps`). Hai gói này tải từ Thunderstore trong `native/install-betterwisps.sh`. Client vẫn cài bằng Gale.
 - **Mod manager client:** [Gale](https://hexium.gg/mod-manager) — **không** dùng r2modman.
 - Download phía server/script: API Hexium `https://valheim.hexium.gg/api/experimental/package/{owner}/{name}/` (helper `hexium_resolve_download_url` trong `native/lib/common.sh`).
 
@@ -39,5 +40,5 @@ Live server deploys (SSH, git pull, systemd, Steam update): `.cursor/skills/vps-
 
 ## Khi sửa docs / index / script
 
-- Thay mọi mention r2modman → Gale; Thunderstore (nguồn mod) → Hexium.
+- Thay mọi mention r2modman → Gale; Thunderstore (nguồn mod) → Hexium, trừ Jotunn và Better Wisps (Hexium không có — giữ Thunderstore).
 - Player-facing: ưu tiên “cài modpack” hơn list từng DLL/mod QoL.
